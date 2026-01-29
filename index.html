@@ -1,0 +1,2863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ohio Grade 7 Math Practice Lab</title>
+
+  <style>
+    :root{
+      /* Earthy + calming palette */
+      --bg1:#f3efe6;        /* warm sand */
+      --bg2:#e9f1ea;        /* sage mist */
+      --ink:#1f2937;        /* deep slate */
+      --muted:#475569;
+
+      --card: rgba(255, 252, 246, .92); /* warm off-white */
+      --card2: rgba(244, 239, 229, .88);/* sandy tint */
+      --stroke: rgba(148, 163, 184, .35);
+
+      --shadow: 0 16px 45px rgba(15, 23, 42, .12);
+      --shadow2: 0 10px 24px rgba(15, 23, 42, .10);
+
+      --radius: 18px;
+      --radius2: 14px;
+
+      --primary:#2f6f64;     /* deep sage */
+      --primary2:#5aa38f;    /* brighter sage */
+      --clay:#b5654d;        /* terracotta */
+      --gold:#c69b3c;        /* warm amber */
+      --success:#2f9a63;     /* green */
+      --warn:#d49b3c;        /* amber */
+      --danger:#d94848;
+
+      --tutorBg: rgba(90, 163, 143, .16);  /* sage */
+      --userBg: rgba(47, 111, 100, .14);   /* deep sage tint */
+
+      --goodBg: rgba(47, 154, 99, .14);
+      --goodStroke: rgba(47, 154, 99, .40);
+
+      --tryBg: rgba(212, 155, 60, .14);
+      --tryStroke: rgba(212, 155, 60, .40);
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(1100px 700px at 20% 0%, rgba(47,111,100,.18), transparent 60%),
+        radial-gradient(900px 650px at 100% 10%, rgba(181,101,77,.14), transparent 60%),
+        radial-gradient(900px 650px at 35% 100%, rgba(198,155,60,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .app{
+      max-width: 1100px;
+      margin: 0 auto;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .topbar{
+      background: linear-gradient(180deg, rgba(255,252,246,.95), rgba(244,239,229,.88));
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 14px;
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 260px;
+    }
+    .logo{
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(47,111,100,.98), rgba(181,101,77,.78));
+      box-shadow: 0 10px 25px rgba(47,111,100,.18);
+      border: 1px solid rgba(255,255,255,.75);
+      position: relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-60%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,.50), transparent);
+      transform: rotate(20deg);
+      animation: shine 9s linear infinite;
+    }
+    @keyframes shine{
+      0%{ transform: translateX(-45%) rotate(20deg); }
+      100%{ transform: translateX(45%) rotate(20deg); }
+    }
+
+    .brand h1{
+      margin:0;
+      font-size: 16px;
+      line-height: 1.15;
+      letter-spacing: .2px;
+    }
+    .brand .sub{
+      margin-top: 2px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .btn{
+      border: 1px solid var(--stroke);
+      background: rgba(255,252,246,.92);
+      color: var(--ink);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      cursor:pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      user-select:none;
+      white-space: nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px) scale(.99); box-shadow: 0 6px 14px rgba(15,23,42,.10); }
+
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(47,111,100,.98), rgba(90,163,143,.90));
+      border-color: rgba(47,111,100,.35);
+      color: rgba(255,255,255,.95);
+      box-shadow: 0 12px 26px rgba(47,111,100,.18);
+      font-weight: 800;
+    }
+    .btn.clay{
+      background: linear-gradient(135deg, rgba(181,101,77,.98), rgba(214,137,110,.88));
+      border-color: rgba(181,101,77,.35);
+      color: rgba(255,255,255,.95);
+      font-weight: 800;
+    }
+    .btn.ghost{
+      background: rgba(255,252,246,.70);
+    }
+    .btn.warn{
+      background: linear-gradient(135deg, rgba(198,155,60,.98), rgba(224,186,95,.88));
+      border-color: rgba(198,155,60,.35);
+      color: #1f2937;
+      font-weight: 900;
+    }
+    .btn.success{
+      background: linear-gradient(135deg, rgba(47,154,99,.98), rgba(116,207,156,.90));
+      border-color: rgba(47,154,99,.35);
+      color: #0b1220;
+      font-weight: 900;
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .cardHeader{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(148,163,184,.30);
+      background: rgba(255,252,246,.70);
+    }
+    .cardHeader h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .mini{
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .cardBody{ padding: 14px; }
+
+    .controlsRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 760px){
+      .controlsRow{ grid-template-columns: 1fr; }
+      .brand{ min-width: unset; }
+    }
+
+    label{ font-size: 12px; color: var(--muted); display:block; margin-bottom: 6px; }
+    select, input[type="text"]{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,.45);
+      background: rgba(255,252,246,.92);
+      font-size: 16px;
+      outline:none;
+    }
+    input[type="text"]::placeholder{ color: rgba(71,85,105,.65); }
+    select:focus, input[type="text"]:focus{
+      border-color: rgba(47,111,100,.55);
+      box-shadow: 0 0 0 4px rgba(47,111,100,.14);
+    }
+
+    .chipRow{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .chip{
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,252,246,.85);
+      color: #334155;
+      cursor:pointer;
+      font-size: 14px;
+      box-shadow: 0 8px 18px rgba(15,23,42,.06);
+      transition: transform .12s ease, background .12s ease;
+    }
+    .chip:hover{ transform: translateY(-1px); }
+    .chip.active{
+      background: rgba(47,111,100,.14);
+      border-color: rgba(47,111,100,.35);
+      color: #0f172a;
+      font-weight: 900;
+    }
+
+    /* Chat */
+    .chat{
+      height: 380px;
+      overflow:auto;
+      padding-right: 4px;
+    }
+    .msg{
+      display:flex;
+      gap: 10px;
+      margin: 10px 0;
+      align-items:flex-start;
+    }
+    .avatar{
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,252,246,.92);
+      color: #334155;
+      flex: 0 0 auto;
+      font-size: 12px;
+    }
+    .bubble{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,252,246,.92);
+      max-width: 92%;
+      line-height: 1.35;
+      font-size: 15.5px;
+      color: #0f172a;
+    }
+    .bubble small{
+      display:block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .msg.tutor .bubble{ background: var(--tutorBg); border-color: rgba(47,111,100,.22); }
+    .msg.user{ flex-direction: row-reverse; }
+    .msg.user .bubble{ background: var(--userBg); border-color: rgba(47,111,100,.24); }
+
+    .bubble.good{ background: var(--goodBg) !important; border-color: var(--goodStroke) !important; }
+    .bubble.try{ background: var(--tryBg) !important; border-color: var(--tryStroke) !important; }
+
+    .toolRow{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    /* Quick response row */
+    .quickRow{
+      display:flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px dashed rgba(148,163,184,.45);
+      background: rgba(255,252,246,.70);
+    }
+    .qbtn{
+      flex: 1 1 140px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148,163,184,.40);
+      background: rgba(255,252,246,.95);
+      cursor:pointer;
+      box-shadow: 0 8px 16px rgba(15,23,42,.06);
+      font-weight: 800;
+      color: #1f2937;
+      transition: transform .12s ease;
+      font-size: 14px;
+    }
+    .qbtn:hover{ transform: translateY(-1px); }
+    .qbtn.primary{ background: rgba(47,111,100,.14); border-color: rgba(47,111,100,.30); }
+    .qbtn.clay{ background: rgba(181,101,77,.14); border-color: rgba(181,101,77,.28); }
+    .qbtn.gold{ background: rgba(198,155,60,.14); border-color: rgba(198,155,60,.28); }
+
+    /* Collapsible sections */
+    details{
+      border-top: 1px solid rgba(148,163,184,.25);
+      padding: 0;
+    }
+    summary{
+      list-style: none;
+      cursor:pointer;
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(255,252,246,.70);
+      user-select:none;
+      font-weight: 900;
+      color: #0f172a;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .summaryHint{
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .sectionBody{
+      padding: 14px;
+    }
+
+    .visualBox{
+      border: 1px dashed rgba(148,163,184,.55);
+      background: rgba(255,252,246,.75);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .guideCard{
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,252,246,.92);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 10px 20px rgba(15,23,42,.06);
+    }
+    .guideCard h3{ margin: 0 0 6px; font-size: 14px; }
+    .guideCard p, .guideCard li{ margin:0; color:#334155; font-size: 14px; line-height: 1.35; }
+    .guideCard ul{ margin: 8px 0 0 18px; padding:0; }
+    .tagRow{
+      display:flex; gap:8px; flex-wrap:wrap; margin-top: 8px;
+    }
+    .tag{
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(244,239,229,.85);
+      color: #334155;
+      font-family: var(--mono);
+    }
+    .tag.sage{ background: rgba(47,111,100,.14); border-color: rgba(47,111,100,.30); }
+    .tag.clay{ background: rgba(181,101,77,.14); border-color: rgba(181,101,77,.28); }
+    .tag.gold{ background: rgba(198,155,60,.14); border-color: rgba(198,155,60,.28); }
+
+    .toast{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,252,246,.95);
+      box-shadow: 0 18px 40px rgba(15,23,42,.14);
+      max-width: 360px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .16s ease, transform .16s ease;
+      z-index: 50;
+      font-size: 14px;
+    }
+    .toast.show{ opacity: 1; transform: translateY(0); }
+    .toast b{ display:block; font-size: 14px; }
+    .toast span{ color: var(--muted); }
+
+    #confetti{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 60;
+    }
+
+    .modalBackdrop{
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 14px;
+      z-index: 80;
+    }
+    .modalBackdrop.show{ display:flex; }
+    .modal{
+      width: min(920px, 100%);
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,252,246,.98);
+      box-shadow: 0 30px 90px rgba(15,23,42,.30);
+      overflow:hidden;
+    }
+    .modalHead{
+      padding: 14px 14px 12px;
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(148,163,184,.35);
+      background: rgba(244,239,229,.85);
+    }
+    .modalBody{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 860px){
+      .modalBody{ grid-template-columns: 1fr; }
+    }
+
+    .softNote{
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="confetti"></canvas>
+
+  <div class="toast" id="toast">
+    <b id="toastTitle">Nice work!</b>
+    <span id="toastMsg">Keep going—one step at a time.</span>
+  </div>
+
+  <div class="modalBackdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Administrator Overview">
+      <div class="modalHead">
+        <div>
+          <div style="font-weight:900; font-size:14px;">Administrator Overview</div>
+          <div style="color:#64748b; font-size:12px; margin-top:2px;">Ohio Grade 7 • Standards-aligned • No logins • No saving</div>
+        </div>
+        <button class="btn ghost" onclick="closeAdmin()">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="guideCard">
+          <h3>What it is</h3>
+          <p>A standards-aligned, step-by-step practice lab for Ohio Grade 7 domains (7.RP, 7.NS, 7.EE, 7.G, 7.SP), with interactive visuals and misconception-based feedback.</p>
+          <div class="tagRow">
+            <span class="tag sage">Standards</span>
+            <span class="tag gold">Session-only</span>
+            <span class="tag clay">No tracking</span>
+          </div>
+        </div>
+        <div class="guideCard">
+          <h3>Why it works</h3>
+          <ul>
+            <li><b>One-step-at-a-time</b> reduces copying and builds reasoning.</li>
+            <li><b>Visual models</b> connect concrete → abstract.</li>
+            <li><b>Misconception detection</b> gives teacher-like feedback.</li>
+            <li><b>Psychological safety</b>: no grades, no saving.</li>
+          </ul>
+        </div>
+        <div class="guideCard">
+          <h3>Accessibility</h3>
+          <ul>
+            <li>Read-aloud for prompts</li>
+            <li>Clear layout + larger text</li>
+            <li>Quick-response buttons reduce typing load</li>
+          </ul>
+        </div>
+        <div class="guideCard">
+          <h3>Privacy</h3>
+          <p>No names, accounts, or permanent storage. Refresh resets the session.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Ohio Grade 7 Math Practice Lab</h1>
+          <div class="sub">Teacher-style chat • Visual models • Study guide • No grades saved</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn ghost" onclick="openAdmin()">Admin View</button>
+        <button class="btn ghost" onclick="readAloud()">🔊 Read Aloud</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="card">
+        <div class="cardHeader">
+          <div>
+            <h2>Teacher Coach Chat</h2>
+            <div class="mini" id="statusLine">Pick a domain + skill. We’ll go one step at a time.</div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn success" onclick="levelDown()">⬇️ Easier</button>
+            <button class="btn warn" onclick="toggleChallenge()" id="challengeBtn">🔥 Challenge: Off</button>
+            <button class="btn success" onclick="levelUp()">⬆️ Harder</button>
+          </div>
+        </div>
+
+        <div class="cardBody">
+          <div class="chipRow" id="domainChips"></div>
+
+          <div class="controlsRow">
+            <div>
+              <label>Skill / Sub-standard</label>
+              <select id="skillSelect"></select>
+            </div>
+            <div>
+              <label>Difficulty</label>
+              <select id="difficultySelect">
+                <option value="1">Level 1 (gentle)</option>
+                <option value="2" selected>Level 2 (grade-level)</option>
+                <option value="3">Level 3 (stretch)</option>
+                <option value="4">Level 4 (challenge)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="chat" id="chat"></div>
+
+          <label style="margin-top:10px;">Your next step <span class="mini">(Press Enter to submit)</span></label>
+          <input type="text" id="studentInput" placeholder='Example: "subtract 7 from both sides"'/>
+          <div class="toolRow">
+            <button class="btn primary" onclick="submitStep()">Submit</button>
+            <button class="btn ghost" onclick="giveHint()">Hint</button>
+            <button class="btn ghost" onclick="showExample()">Example</button>
+            <button class="btn ghost" onclick="newProblem()">New Problem</button>
+          </div>
+
+          <div class="quickRow" id="quickRow"></div>
+
+          <div class="softNote">✅ Nothing is graded or saved. Mistakes are normal. We adjust and try again.</div>
+
+          <details open>
+            <summary>
+              <span>👀 Visual Model</span>
+              <span class="summaryHint" id="visualLabel">Condensed but interactive</span>
+            </summary>
+            <div class="sectionBody">
+              <div class="visualBox" id="visual"></div>
+            </div>
+          </details>
+
+          <details>
+            <summary>
+              <span>📘 Student Study Guide</span>
+              <span class="summaryHint" id="standardTag">Ohio Standard</span>
+            </summary>
+            <div class="sectionBody" id="guideBody"></div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/***********************
+ * STATE (session-only)
+ ***********************/
+let state = {
+  domain: "EE",
+  skill: null,
+  difficulty: 2,
+  challenge: false,
+  stepIndex: 0,
+  current: null
+};
+
+/***********************
+ * DOMAIN + SUBSTANDARDS
+ ***********************/
+const DOMAINS = [
+  { id:"RP", name:"7.RP", emoji:"📏", label:"Ratios & Proportions" },
+  { id:"NS", name:"7.NS", emoji:"➕", label:"Number System" },
+  { id:"EE", name:"7.EE", emoji:"🧩", label:"Expressions & Equations" },
+  { id:"G",  name:"7.G",  emoji:"📐", label:"Geometry" },
+  { id:"SP", name:"7.SP", emoji:"🎲", label:"Stats & Probability" },
+];
+
+const SUBSTANDARDS = {
+  RP: [
+    { id:"RP1", title:"Unit Rates", code:"7.RP.A.1", emoji:"💲", guide:{
+      key:"Unit rate = per 1. Divide total by number of units.",
+      steps:["Identify total and units.","Divide total by units.","Label units (miles per hour, $ per item, etc.)."],
+      mistakes:["Multiplying instead of dividing.","Forgetting labels."],
+      example:"5 items cost $20 → $20 ÷ 5 = $4 per item."
+    }},
+    { id:"RP2", title:"Proportions", code:"7.RP.A.2", emoji:"⚖️", guide:{
+      key:"Equivalent ratios form a proportion. Use cross multiplication.",
+      steps:["Write two equal ratios.","Cross multiply.","Solve and check reasonableness."],
+      mistakes:["Flipping one ratio only.","Cross-multiplying wrong pairs."],
+      example:"3/5 = x/10 → 5x = 30 → x = 6."
+    }},
+    { id:"RP3", title:"Percent Change", code:"7.RP.A.3", emoji:"📈", guide:{
+      key:"Percent change compares change to the original.",
+      steps:["Convert percent to decimal.","Multiply by original to find change.","Add/subtract change from original."],
+      mistakes:["Using new value as the base.","Wrong decimal conversion."],
+      example:"Increase 50 by 20% → 0.20×50=10 → 60."
+    }},
+  ],
+  NS: [
+    { id:"NS1", title:"Add & Subtract Integers", code:"7.NS.A.1", emoji:"↔️", guide:{
+      key:"Same sign: add. Different signs: subtract distances; keep sign of larger absolute value.",
+      steps:["Decide same/different signs.","Add or subtract absolute values.","Apply correct sign."],
+      mistakes:["Sign errors.","Subtracting a negative incorrectly."],
+      example:"-3 + 7 = 4."
+    }},
+    { id:"NS2", title:"Multiply & Divide Rational Numbers", code:"7.NS.A.2", emoji:"✖️", guide:{
+      key:"Multiply/divide absolute values, then apply sign rules.",
+      steps:["Compute magnitude.","Apply sign rule.","Simplify."],
+      mistakes:["Sign mistakes.","Dividing fractions wrong."],
+      example:"(3/4) ÷ (1/2)= (3/4)×2 = 3/2."
+    }},
+    { id:"NS3", title:"Real-world Rational Problems", code:"7.NS.A.3", emoji:"🌡️", guide:{
+      key:"Choose the operation based on context (temp changes, profit/loss, elevation).",
+      steps:["Define what + and − mean.","Choose operation.","Compute and interpret."],
+      mistakes:["Correct number, wrong meaning.","Ignoring signs."],
+      example:"Temp -2 then drops 5 → -2 + (-5)= -7."
+    }},
+  ],
+  EE: [
+    { id:"EE1", title:"Simplify Expressions", code:"7.EE.A.1", emoji:"🧹", guide:{
+      key:"Distribute, then combine like terms.",
+      steps:["Distribute if needed.","Combine like terms.","Rewrite neatly."],
+      mistakes:["Combining unlike terms.","Partial distribution."],
+      example:"3(x+4)=3x+12; 2x+5x=7x."
+    }},
+    { id:"EE2", title:"One-Step Equations", code:"7.EE.B.3", emoji:"🔓", guide:{
+      key:"Undo the operation to isolate the variable.",
+      steps:["Identify operation on x.","Use inverse on both sides.","Check."],
+      mistakes:["Wrong inverse.","Only one side."],
+      example:"x/5=6 → x=30."
+    }},
+    { id:"EE3", title:"Two-Step Equations", code:"7.EE.B.3", emoji:"🧠", guide:{
+      key:"Undo +/− first, then ×/÷.",
+      steps:["Undo the constant.","Undo the coefficient.","Check."],
+      mistakes:["Dividing before removing constant.","Sign mistakes."],
+      example:"3x+7=25 → x=6."
+    }},
+    { id:"EE4", title:"Inequalities", code:"7.EE.B.4", emoji:"<", guide:{
+      key:"Solve like an equation. Flip sign only if multiplying/dividing by a negative.",
+      steps:["Undo constant.","Undo coefficient.","Flip sign if needed."],
+      mistakes:["Flipping when not needed.","Not flipping when needed."],
+      example:"-2x+5>13 → x< -4."
+    }},
+    { id:"EE5", title:"Word Problems with Equations", code:"7.EE.B.4", emoji:"🗣️", guide:{
+      key:"Let x be the unknown, write an equation, solve, interpret.",
+      steps:["Define x.","Write equation.","Solve and interpret."],
+      mistakes:["Wrong variable meaning.","Missing fixed fee."],
+      example:"Fee 8 + 2 per ticket totals 26 → x=9."
+    }},
+  ],
+  G: [
+    { id:"G1", title:"Area (Triangles & Quads)", code:"7.G.B.6", emoji:"📏", guide:{
+      key:"Use the correct area formula.",
+      steps:["Identify shape.","Use formula.","Compute with square units."],
+      mistakes:["Forgetting ½ for triangles.","Dropping square units."],
+      example:"Triangle: ½bh."
+    }},
+    { id:"G2", title:"Circles (Area & Circumference)", code:"7.G.B.4", emoji:"⭕", guide:{
+      key:"C is around, A is inside.",
+      steps:["Pick formula.","Substitute values.","Compute and round."],
+      mistakes:["Using diameter for radius.","Squaring wrong value."],
+      example:"r=4 → A=16π, C=8π."
+    }},
+    { id:"G3", title:"Volume (Prisms)", code:"7.G.B.6", emoji:"🧊", guide:{
+      key:"V = (area of base) × height.",
+      steps:["Find base area.","Multiply by height.","Use cubic units."],
+      mistakes:["Using perimeter.","Forgetting cubic units."],
+      example:"Base 4×3, height 5 → V=60."
+    }},
+    { id:"G4", title:"Surface Area", code:"7.G.B.6", emoji:"📦", guide:{
+      key:"Add areas of all faces.",
+      steps:["Find each face area.","Count faces correctly.","Add them up."],
+      mistakes:["Missing a face.","Doubling wrong faces."],
+      example:"Rectangular prism: SA=2(lw+lh+wh)."
+    }},
+  ],
+  SP: [
+    { id:"SP1", title:"Mean & MAD", code:"7.SP.B.4", emoji:"📊", guide:{
+      key:"Mean is average; MAD is average distance from the mean.",
+      steps:["Find mean.","Find distances.","Average the distances."],
+      mistakes:["Forgetting absolute values.","Averaging too early."],
+      example:"2,4,6 mean=4 distances 2,0,2 MAD=1.33."
+    }},
+    { id:"SP2", title:"Probability Models", code:"7.SP.C.5", emoji:"🎯", guide:{
+      key:"Probability = favorable ÷ total outcomes.",
+      steps:["Count outcomes.","Count favorable.","Write as fraction."],
+      mistakes:["Flipping fraction.","Counting wrong."],
+      example:"3 red, 2 blue → P(red)=3/5."
+    }},
+    { id:"SP3", title:"Compare Data Sets", code:"7.SP.B.3", emoji:"⚖️", guide:{
+      key:"Compare center (mean/median) and spread (range/MAD).",
+      steps:["Compute center.","Compute spread.","Compare and interpret."],
+      mistakes:["Only comparing mean.","Mixing mean and median."],
+      example:"Same mean, bigger range → more variability."
+    }},
+    { id:"SP4", title:"Sampling & Bias", code:"7.SP.A.1–2", emoji:"🧪", guide:{
+      key:"Random samples reduce bias and represent the population better.",
+      steps:["Identify population.","Choose sampling method.","Name possible bias."],
+      mistakes:["Only surveying friends.","Ignoring non-response bias."],
+      example:"Randomly sample across grade levels."
+    }},
+  ],
+};
+
+/***********************
+ * Utilities
+ ***********************/
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function randChoice(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g, m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+function toNumber(s){
+  if(s===null || s===undefined) return NaN;
+  const cleaned = String(s).trim();
+  const frac = parseFraction(cleaned);
+  if(frac) return frac.num/frac.den;
+  const n = Number(cleaned.replace(/[^0-9\.\-]/g,""));
+  return Number.isFinite(n) ? n : NaN;
+}
+function parseFraction(s){
+  const m = String(s).trim().match(/^(-?\d+)\s*\/\s*(-?\d+)$/);
+  if(!m) return null;
+  const num = Number(m[1]), den = Number(m[2]);
+  if(den===0) return null;
+  return { num, den };
+}
+function nearlyEqual(a,b,eps=0.02){
+  if(!Number.isFinite(a) || !Number.isFinite(b)) return false;
+  return Math.abs(a-b) <= eps;
+}
+function normalizeEq(s){
+  return String(s).toLowerCase().replace(/\s+/g,"").replace(/×/g,"*").replace(/–/g,"-");
+}
+
+/***********************
+ * Toast + Confetti
+ ***********************/
+let toastTimer=null;
+function toast(title,msg){
+  const el = document.getElementById("toast");
+  document.getElementById("toastTitle").textContent = title;
+  document.getElementById("toastMsg").textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> el.classList.remove("show"), 2200);
+}
+
+function celebrate(){
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const count = state.challenge ? 220 : 150;
+  const particles = [];
+  for(let i=0;i<count;i++){
+    particles.push({
+      x: canvas.width/2 + (Math.random()*260-130),
+      y: canvas.height*0.25 + (Math.random()*110-55),
+      vx: (Math.random()*10-5),
+      vy: (Math.random()*-10-2),
+      g: 0.25 + Math.random()*0.35,
+      s: 4 + Math.random()*6,
+      r: Math.random()*Math.PI,
+      vr: (Math.random()*0.2-0.1),
+      hue: Math.random()*360
+    });
+  }
+  let t=0;
+  function frame(){
+    t++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.vy += p.g;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.r += p.vr;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.r);
+      ctx.fillStyle = `hsla(${p.hue}, 90%, 55%, .95)`;
+      ctx.fillRect(-p.s/2, -p.s/2, p.s, p.s);
+      ctx.restore();
+    });
+    if(t<55) requestAnimationFrame(frame);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  requestAnimationFrame(frame);
+}
+
+/***********************
+ * Admin modal
+ ***********************/
+function openAdmin(){
+  document.getElementById("modalBackdrop").classList.add("show");
+  document.getElementById("modalBackdrop").setAttribute("aria-hidden","false");
+}
+function closeAdmin(){
+  document.getElementById("modalBackdrop").classList.remove("show");
+  document.getElementById("modalBackdrop").setAttribute("aria-hidden","true");
+}
+
+/***********************
+ * Chat UI
+ ***********************/
+function addMsg(role, text, meta, styleClass){
+  const chat = document.getElementById("chat");
+  const msg = document.createElement("div");
+  msg.className = `msg ${role}`;
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = role==="user" ? "You" : "Coach";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble" + (styleClass ? ` ${styleClass}` : "");
+  bubble.innerHTML = escapeHTML(text).replace(/\n/g,"<br/>");
+
+  if(meta){
+    const small = document.createElement("small");
+    small.textContent = meta;
+    bubble.appendChild(small);
+  }
+  msg.appendChild(avatar);
+  msg.appendChild(bubble);
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function tutorIntro(){
+  addMsg("tutor",
+    `Welcome! 👋\nThis is a safe place to practice.\nNothing is graded or saved.\n\nPick a domain + skill, and I’ll guide you one step at a time.`,
+    "Tip: Use the quick buttons if typing is hard.");
+}
+
+const PRAISE = [
+  "Nice move — keep that idea going.",
+  "Good adjustment. That’s math thinking.",
+  "You’re on track. One step at a time.",
+  "That makes sense — now the next step.",
+  "Great effort. Keep going."
+];
+
+/***********************
+ * Skill selection helpers
+ ***********************/
+function getSelectedSkill(){
+  const list = SUBSTANDARDS[state.domain];
+  return list.find(x=>x.id===state.skill) || list[0];
+}
+
+function buildDomainChips(){
+  const row = document.getElementById("domainChips");
+  row.innerHTML = "";
+  DOMAINS.forEach(d=>{
+    const chip = document.createElement("button");
+    chip.className = "chip";
+    chip.textContent = `${d.emoji} ${d.name} — ${d.label}`;
+    chip.onclick = ()=> setDomain(d.id);
+    row.appendChild(chip);
+  });
+  syncChips();
+}
+
+function syncChips(){
+  const row = document.getElementById("domainChips");
+  [...row.children].forEach((c,i)=>{
+    const d = DOMAINS[i];
+    c.classList.toggle("active", d.id===state.domain);
+  });
+}
+
+function fillSkills(){
+  const sel = document.getElementById("skillSelect");
+  sel.innerHTML = "";
+  SUBSTANDARDS[state.domain].forEach(s=>{
+    const opt = document.createElement("option");
+    opt.value = s.id;
+    opt.textContent = `${s.emoji} ${s.title} (${s.code})`;
+    sel.appendChild(opt);
+  });
+  state.skill = SUBSTANDARDS[state.domain][0].id;
+}
+
+/***********************
+ * Quick response row (context-aware)
+ ***********************/
+function setQuickButtons(stepObj){
+  const row = document.getElementById("quickRow");
+  row.innerHTML = "";
+
+  // If step provides specific quick choices, use them.
+  const quick = (stepObj && Array.isArray(stepObj.quick) && stepObj.quick.length) ? stepObj.quick : [];
+
+  // Default quick buttons if none: Hint / Example / New Problem
+  const defaults = [
+    { label:"💡 Hint", action:"HINT", style:"gold" },
+    { label:"📘 Example", action:"EXAMPLE", style:"primary" },
+    { label:"🎲 New", action:"NEW", style:"clay" },
+  ];
+
+  const buttons = quick.length ? quick : defaults;
+
+  buttons.slice(0,3).forEach((b,i)=>{
+    const btn = document.createElement("button");
+    btn.className = `qbtn ${b.style||""}`;
+    btn.textContent = b.label;
+    btn.onclick = ()=>{
+      if(b.action==="HINT") return giveHint();
+      if(b.action==="EXAMPLE") return showExample();
+      if(b.action==="NEW") return newProblem();
+
+      // Fill and optionally auto-submit
+      const input = document.getElementById("studentInput");
+      input.value = b.fill ?? b.label;
+      input.focus();
+      if(b.submit) submitStep();
+    };
+    row.appendChild(btn);
+  });
+}
+
+/***********************
+ * Visual Models (kept, condensed)
+ ***********************/
+function visualName(t){
+  return ({
+    numberLine:"Number Line",
+    tape:"Tape Diagram",
+    balance:"Balance Model",
+    triangleDrag:"Geometry Model",
+    circle:"Circle Model",
+    prism:"Prism Model",
+    probBox:"Probability Model",
+    signRules:"Sign Rules",
+    none:"Visual Model"
+  })[t] || "Visual Model";
+}
+
+function tickMarks(min,max,scaleX){
+  const ticks = [];
+  for(let n=min; n<=max; n++){
+    if(n%5===0){
+      ticks.push(`<line x1="${scaleX(n)}" y1="52" x2="${scaleX(n)}" y2="68" stroke="rgba(31,41,55,.25)" stroke-width="2"/>`);
+      ticks.push(`<text x="${scaleX(n)}" y="100" text-anchor="middle" fill="rgba(71,85,105,.90)" font-size="11">${n}</text>`);
+    } else {
+      ticks.push(`<line x1="${scaleX(n)}" y1="56" x2="${scaleX(n)}" y2="64" stroke="rgba(31,41,55,.15)" stroke-width="1"/>`);
+    }
+  }
+  return ticks.join("");
+}
+
+function renderVisual(p){
+  const v = document.getElementById("visual");
+  v.innerHTML = "";
+  const m = p.model || {type:"none"};
+  document.getElementById("visualLabel").textContent = `${visualName(m.type)}`;
+
+  if(m.type==="numberLine") return renderNumberLine(v, m);
+  if(m.type==="tape") return renderTape(v, m);
+  if(m.type==="balance") return renderBalance(v, m);
+  if(m.type==="triangleDrag") return renderTriangle(v, m);
+  if(m.type==="circle") return renderCircle(v, m);
+  if(m.type==="prism") return renderPrism(v, m);
+  if(m.type==="probBox") return renderProbBox(v, m);
+  if(m.type==="signRules") return renderSignRules(v);
+  v.innerHTML = `<div style="color:#64748b; font-size:14px;">No visual model for this one yet.</div>`;
+}
+
+function renderNumberLine(root, m){
+  const width = 720, height = 110;
+  const min = -20, max = 20;
+  const start = m.a;
+  const target = m.target;
+
+  const scaleX = (n)=> 20 + ( (n-min) / (max-min) ) * (width-40);
+  const snap = (x)=> {
+    const t = (x-20)/(width-40);
+    const n = min + t*(max-min);
+    return Math.round(n);
+  };
+
+  root.innerHTML = `
+    <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:8px; color:#64748b; font-size:13px;">
+      <div>Start at <b>${start}</b>, move <b>${m.b}</b>. Drag the dot.</div>
+      <div>Double-tap to jump to target.</div>
+    </div>
+    <svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}">
+      <defs>
+        <linearGradient id="nl" x1="0" x2="1">
+          <stop offset="0" stop-color="rgba(47,111,100,.95)"/>
+          <stop offset="1" stop-color="rgba(181,101,77,.80)"/>
+        </linearGradient>
+      </defs>
+      <line x1="20" y1="60" x2="${width-20}" y2="60" stroke="rgba(31,41,55,.25)" stroke-width="4" stroke-linecap="round"/>
+      ${tickMarks(min,max,scaleX)}
+      <circle cx="${scaleX(target)}" cy="60" r="12" fill="rgba(47,154,99,.15)" stroke="rgba(47,154,99,.45)" stroke-width="2"/>
+      <text x="${scaleX(target)}" y="92" text-anchor="middle" fill="rgba(34,130,80,.95)" font-size="12">target</text>
+
+      <circle id="dot" cx="${scaleX(start)}" cy="60" r="14" fill="url(#nl)" style="cursor:grab;"/>
+      <text id="dotLabel" x="${scaleX(start)}" y="34" text-anchor="middle" fill="rgba(30,41,59,.9)" font-size="12">position: ${start}</text>
+    </svg>
+  `;
+
+  const svg = root.querySelector("svg");
+  const dot = root.querySelector("#dot");
+  const dotLabel = root.querySelector("#dotLabel");
+  let dragging = false;
+
+  const setDot = (n)=>{
+    const x = scaleX(n);
+    dot.setAttribute("cx", x);
+    dotLabel.setAttribute("x", x);
+    dotLabel.textContent = `position: ${n}`;
+  };
+
+  dot.addEventListener("pointerdown", (e)=>{ dragging=true; dot.style.cursor="grabbing"; dot.setPointerCapture(e.pointerId); });
+  dot.addEventListener("pointerup", ()=>{ dragging=false; dot.style.cursor="grab"; });
+  dot.addEventListener("pointermove", (e)=>{
+    if(!dragging) return;
+    const rect = svg.getBoundingClientRect();
+    const x = clamp(e.clientX - rect.left, 20, width-20);
+    const n = clamp(snap(x), min, max);
+    setDot(n);
+  });
+
+  svg.addEventListener("dblclick", ()=> setDot(target));
+}
+
+function renderTape(root, m){
+  const units = m.units;
+  const total = m.total;
+
+  root.innerHTML = `
+    <div style="color:#64748b; font-size:13px; margin-bottom:8px;">
+      Tap boxes to count units. Unit rate means “per 1”.
+    </div>
+    <div id="tape" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
+    <div style="margin-top:10px; color:#64748b; font-size:13px;">
+      Setup: <span style="font-family:var(--mono)">${m.labelTotal} ÷ ${units}</span>
+    </div>
+  `;
+
+  const tape = root.querySelector("#tape");
+  let selected = 0;
+
+  for(let i=0;i<units;i++){
+    const box = document.createElement("button");
+    box.className="btn ghost";
+    box.style.minWidth="96px";
+    box.style.background="rgba(47,111,100,.10)";
+    box.style.borderColor="rgba(47,111,100,.25)";
+    box.innerHTML = `1 unit<br><small style="color:#64748b;">tap</small>`;
+    box.onclick=()=>{
+      box.style.background="rgba(47,154,99,.14)";
+      box.style.borderColor="rgba(47,154,99,.30)";
+      box.innerHTML = `1 unit<br><small style="color:#64748b;">✓</small>`;
+      selected++;
+      toast("Nice!", `Counted ${selected}/${units}. Now divide total by units.`);
+    };
+    tape.appendChild(box);
+  }
+}
+
+function renderBalance(root, m){
+  const width=760, height=150;
+
+  root.innerHTML = `
+    <div style="color:#64748b; font-size:13px; margin-bottom:8px;">
+      Balance idea: do the same thing to both sides.
+    </div>
+    <svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}">
+      <line x1="380" y1="18" x2="380" y2="132" stroke="rgba(31,41,55,.25)" stroke-width="6" stroke-linecap="round"/>
+      <line x1="160" y1="76" x2="600" y2="76" stroke="rgba(31,41,55,.25)" stroke-width="6" stroke-linecap="round"/>
+
+      <rect x="150" y="92" width="240" height="32" rx="10" fill="rgba(47,111,100,.12)" stroke="rgba(47,111,100,.28)"/>
+      <text x="270" y="114" text-anchor="middle" fill="rgba(30,41,59,.95)" font-size="12">${m.leftLabel}</text>
+
+      <rect x="420" y="92" width="200" height="32" rx="10" fill="rgba(181,101,77,.14)" stroke="rgba(181,101,77,.28)"/>
+      <text x="520" y="114" text-anchor="middle" fill="rgba(30,41,59,.95)" font-size="12">${m.rightLabel}</text>
+    </svg>
+  `;
+}
+
+function renderTriangle(root, m){
+  const base = m.base, startH = m.height;
+  const width=740, height=210;
+
+  root.innerHTML = `
+    <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:8px; color:#64748b; font-size:13px;">
+      <div>Drag height handle. Area updates live.</div>
+      <div style="font-family:var(--mono)">A = ½ × b × h</div>
+    </div>
+    <div style="display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap;">
+      <svg id="tri" viewBox="0 0 ${width} ${height}" width="100%" height="${height}" style="max-width:760px;">
+        <defs>
+          <linearGradient id="tg" x1="0" x2="1">
+            <stop offset="0" stop-color="rgba(47,154,99,.38)"/>
+            <stop offset="1" stop-color="rgba(181,101,77,.26)"/>
+          </linearGradient>
+        </defs>
+        <polygon points="120,170 620,170 370,60" fill="url(#tg)" stroke="rgba(31,41,55,.18)" stroke-width="2"/>
+        <line x1="120" y1="170" x2="620" y2="170" stroke="rgba(31,41,55,.22)" stroke-width="4" stroke-linecap="round"/>
+        <text x="370" y="195" text-anchor="middle" fill="rgba(71,85,105,.95)" font-size="12">base</text>
+
+        <line id="hLine" x1="370" y1="170" x2="370" y2="60" stroke="rgba(198,155,60,.85)" stroke-width="5" stroke-linecap="round"/>
+        <circle id="hHandle" cx="370" cy="60" r="10" fill="rgba(198,155,60,.95)" style="cursor:grab;"/>
+      </svg>
+      <div style="min-width:220px;">
+        <div class="guideCard" style="margin:0;">
+          <h3>Live values</h3>
+          <p id="triVals" style="margin-top:6px;"></p>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const svg = root.querySelector("#tri");
+  const handle = root.querySelector("#hHandle");
+  const hLine = root.querySelector("#hLine");
+  const vals = root.querySelector("#triVals");
+
+  let h = startH;
+
+  function update(){
+    const py = clamp(170 - (h/20)*120, 40, 170);
+    handle.setAttribute("cy", py);
+    hLine.setAttribute("y2", py);
+    const area = 0.5 * base * h;
+    vals.innerHTML = `base = <span style="font-family:var(--mono)">${base}</span><br>height ≈ <span style="font-family:var(--mono)">${h.toFixed(1)}</span><br>area ≈ <span style="font-family:var(--mono)">${area.toFixed(1)}</span>`;
+  }
+  update();
+
+  let dragging=false;
+  handle.addEventListener("pointerdown",(e)=>{ dragging=true; handle.style.cursor="grabbing"; handle.setPointerCapture(e.pointerId); });
+  handle.addEventListener("pointerup",()=>{ dragging=false; handle.style.cursor="grab"; });
+  handle.addEventListener("pointermove",(e)=>{
+    if(!dragging) return;
+    const rect = svg.getBoundingClientRect();
+    const y = clamp(e.clientY - rect.top, 40, 170);
+    const t = (170 - y) / (170-40);
+    h = 1 + t*20;
+    update();
+  });
+}
+
+function renderCircle(root, m){
+  const w=520, h=220;
+  root.innerHTML = `
+    <div style="color:#64748b; font-size:13px; margin-bottom:8px;">
+      Circle model: r = ${m.r} (radius). ${m.mode==="A" ? "Area uses πr²" : "Circumference uses 2πr"}.
+    </div>
+    <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}">
+      <circle cx="170" cy="110" r="70" fill="rgba(47,111,100,.10)" stroke="rgba(47,111,100,.35)" stroke-width="3"/>
+      <line x1="170" y1="110" x2="240" y2="110" stroke="rgba(181,101,77,.70)" stroke-width="4" stroke-linecap="round"/>
+      <text x="205" y="98" text-anchor="middle" fill="rgba(71,85,105,.95)" font-size="12">r</text>
+      <text x="340" y="90" fill="rgba(71,85,105,.95)" font-size="12" style="font-family:var(--mono)">
+        r = ${m.r}
+      </text>
+      <text x="340" y="120" fill="rgba(71,85,105,.95)" font-size="12" style="font-family:var(--mono)">
+        π ≈ ${m.piApprox}
+      </text>
+      <text x="340" y="150" fill="rgba(71,85,105,.95)" font-size="12" style="font-family:var(--mono)">
+        ${m.mode==="A" ? "A = πr²" : "C = 2πr"}
+      </text>
+    </svg>
+  `;
+}
+
+function renderPrism(root, m){
+  const w=560, h=240;
+  root.innerHTML = `
+    <div style="color:#64748b; font-size:13px; margin-bottom:8px;">
+      Prism model: base ${m.l}×${m.w} and height ${m.h}.
+    </div>
+    <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}">
+      <rect x="120" y="60" width="220" height="140" rx="12"
+        fill="rgba(181,101,77,.10)" stroke="rgba(181,101,77,.35)" stroke-width="3"/>
+      <rect x="200" y="30" width="220" height="140" rx="12"
+        fill="rgba(47,111,100,.10)" stroke="rgba(47,111,100,.35)" stroke-width="3"/>
+      <line x1="120" y1="60" x2="200" y2="30" stroke="rgba(31,41,55,.20)" stroke-width="3"/>
+      <line x1="340" y1="60" x2="420" y2="30" stroke="rgba(31,41,55,.20)" stroke-width="3"/>
+      <line x1="120" y1="200" x2="200" y2="170" stroke="rgba(31,41,55,.20)" stroke-width="3"/>
+      <line x1="340" y1="200" x2="420" y2="170" stroke="rgba(31,41,55,.20)" stroke-width="3"/>
+
+      <text x="60" y="120" fill="rgba(71,85,105,.95)" font-size="12" style="font-family:var(--mono)">l=${m.l}</text>
+      <text x="60" y="140" fill="rgba(71,85,105,.95)" font-size="12" style="font-family:var(--mono)">w=${m.w}</text>
+      <text x="60" y="160" fill="rgba(71,85,105,.95)" font-size="12" style="font-family:var(--mono)">h=${m.h}</text>
+    </svg>
+  `;
+}
+
+function renderProbBox(root, m){
+  let trials=0, fav=0;
+  root.innerHTML = `
+    <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:8px; color:#64748b; font-size:13px;">
+      <div>Click to simulate (with replacement).</div>
+      <div style="font-family:var(--mono)">${m.fav} favorable, ${m.other} other</div>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <button class="btn primary" id="draw1">Draw once</button>
+      <button class="btn ghost" id="draw10">Draw 10</button>
+      <button class="btn ghost" id="reset">Reset</button>
+      <div style="color:#334155; font-size:13px;" id="probReadout"></div>
+    </div>
+    <div style="margin-top:10px; display:flex; gap:10px; align-items:center;">
+      <div style="flex:1; height:14px; background:rgba(148,163,184,.25); border-radius:999px; overflow:hidden; border:1px solid rgba(148,163,184,.35);">
+        <div id="bar" style="height:100%; width:0%; background:linear-gradient(90deg, rgba(47,154,99,.85), rgba(181,101,77,.65));"></div>
+      </div>
+      <div style="color:#64748b; font-size:12px;">Experimental P</div>
+    </div>
+  `;
+
+  const readout = root.querySelector("#probReadout");
+  const bar = root.querySelector("#bar");
+
+  function draw(n=1){
+    const total = m.fav+m.other;
+    for(let i=0;i<n;i++){
+      const pick = Math.random()*total;
+      trials++;
+      if(pick < m.fav) fav++;
+    }
+    const p = trials ? (fav/trials) : 0;
+    readout.innerHTML = `Trials: <span style="font-family:var(--mono)">${trials}</span> • Favorable: <span style="font-family:var(--mono)">${fav}</span> • P: <span style="font-family:var(--mono)">${p.toFixed(2)}</span>`;
+    bar.style.width = `${(p*100).toFixed(1)}%`;
+  }
+
+  root.querySelector("#draw1").onclick=()=> draw(1);
+  root.querySelector("#draw10").onclick=()=> draw(10);
+  root.querySelector("#reset").onclick=()=>{ trials=0; fav=0; draw(0); };
+  draw(0);
+}
+
+function renderSignRules(root){
+  root.innerHTML = `
+    <div style="background:rgba(255,252,246,.92); border:1px solid rgba(148,163,184,.35); border-radius:14px; padding:12px;">
+      <b>Quick sign rules</b>
+      <ul style="margin:8px 0 0 18px; color:#334155;">
+        <li>Same signs → positive</li>
+        <li>Different signs → negative</li>
+      </ul>
+    </div>
+  `;
+}
+
+/***********************
+ * Validation helpers (step results)
+ ***********************/
+function ok(text){ return { ok:true, text }; }
+function miss(text){ return { ok:false, text }; }
+
+/***********************
+ * Difficulty knobs
+ * L1: simpler ints, no negatives/fractions
+ * L2: grade-level ints, some negatives
+ * L3: more negatives, some decimals/fractions, distributive
+ * L4: more complex multi-step, more fractions/decimals, inequality flips, bigger data sets
+ ***********************/
+function diffKnobs(){
+  const L = state.difficulty;
+  return {
+    allowNeg: L>=2,
+    moreNeg: L>=3,
+    allowDec: L>=3,
+    allowFrac: L>=4,
+    biggerNums: L>=3,
+    multiStep: L>=4,
+  };
+}
+function maybeNeg(n){
+  const k = diffKnobs();
+  if(!k.allowNeg) return Math.abs(n);
+  const p = k.moreNeg ? 0.60 : 0.35;
+  return Math.random()<p ? -Math.abs(n) : Math.abs(n);
+}
+function maybeDecimal(base){
+  const k = diffKnobs();
+  if(!k.allowDec) return base;
+  const dec = randChoice([0.1,0.2,0.25,0.3,0.4,0.5,0.75]);
+  return Math.random()<0.6 ? (base + dec) : base;
+}
+function maybeFraction(){
+  // simple fractions for L4
+  const fracs = [
+    {num:1,den:2},{num:1,den:3},{num:2,den:3},{num:3,den:4},{num:2,den:5},{num:3,den:5}
+  ];
+  return randChoice(fracs);
+}
+
+/***********************
+ * PROBLEM GENERATOR: ALL domains + ALL sub-standards
+ * Large "bank" = many randomized templates per skill.
+ ***********************/
+function makeProblem(){
+  const d = state.domain;
+  const s = getSelectedSkill();
+  const k = diffKnobs();
+
+  // 7.RP
+  if(d==="RP" && s.id==="RP1") return genRP1_UnitRate(s,k);
+  if(d==="RP" && s.id==="RP2") return genRP2_Proportion(s,k);
+  if(d==="RP" && s.id==="RP3") return genRP3_Percent(s,k);
+
+  // 7.NS
+  if(d==="NS" && s.id==="NS1") return genNS1_AddSubIntegers(s,k);
+  if(d==="NS" && s.id==="NS2") return genNS2_MultDivRationals(s,k);
+  if(d==="NS" && s.id==="NS3") return genNS3_WordRational(s,k);
+
+  // 7.EE
+  if(d==="EE" && s.id==="EE1") return genEE1_Simplify(s,k);
+  if(d==="EE" && s.id==="EE2") return genEE2_OneStep(s,k);
+  if(d==="EE" && s.id==="EE3") return genEE3_TwoStep(s,k);
+  if(d==="EE" && s.id==="EE4") return genEE4_Inequality(s,k);
+  if(d==="EE" && s.id==="EE5") return genEE5_WordEq(s,k);
+
+  // 7.G
+  if(d==="G" && s.id==="G1") return genG1_Area(s,k);
+  if(d==="G" && s.id==="G2") return genG2_Circle(s,k);
+  if(d==="G" && s.id==="G3") return genG3_Volume(s,k);
+  if(d==="G" && s.id==="G4") return genG4_SurfaceArea(s,k);
+
+  // 7.SP
+  if(d==="SP" && s.id==="SP1") return genSP1_MeanMAD(s,k);
+  if(d==="SP" && s.id==="SP2") return genSP2_Probability(s,k);
+  if(d==="SP" && s.id==="SP3") return genSP3_CompareSets(s,k);
+  if(d==="SP" && s.id==="SP4") return genSP4_SamplingBias(s,k);
+
+  // fallback
+  return {
+    skill:s,
+    title:`Practice: ${s.title} (${s.code})`,
+    model:{type:"none"},
+    steps:[{
+      prompt:`Type "ready" to practice. (This skill is still being expanded.)`,
+      quick:[
+        {label:"ready", fill:"ready", submit:true, style:"primary"},
+        {label:"💡 Hint", action:"HINT", style:"gold"},
+        {label:"🎲 New", action:"NEW", style:"clay"},
+      ],
+      validate:(input)=> input.includes("ready") ? ok(`✅ Ready! Choose "New Problem" for another.`) : miss(`Type "ready".`)
+    }]
+  };
+}
+
+/************* RP1: Unit Rates *************/
+function genRP1_UnitRate(s,k){
+  const template = randChoice([
+    "items",
+    "miles",
+    "minutes",
+    "tickets"
+  ]);
+
+  let units, per, total, labelTotal, unitLabel;
+  if(template==="items"){
+    units = randInt(2, k.biggerNums?12:7);
+    per = maybeDecimal(randInt(2, k.biggerNums?10:7));
+    total = +(units*per).toFixed(2);
+    labelTotal = `$${total}`;
+    unitLabel = "$ per item";
+  } else if(template==="miles"){
+    units = randInt(2, k.biggerNums?6:5); // hours
+    per = maybeDecimal(randInt(30, k.biggerNums?70:55)); // mph
+    total = +(units*per).toFixed(1);
+    labelTotal = `${total} miles`;
+    unitLabel = "miles per hour";
+  } else if(template==="minutes"){
+    units = randInt(2, k.biggerNums?8:6); // minutes
+    per = maybeDecimal(randInt(0,0)+randInt(2, k.biggerNums?9:7)); // pages per minute
+    total = +(units*per).toFixed(1);
+    labelTotal = `${total} pages`;
+    unitLabel = "pages per minute";
+  } else {
+    units = randInt(2, k.biggerNums?10:7); // tickets
+    per = maybeDecimal(randInt(6, k.biggerNums?14:10));
+    total = +(units*per).toFixed(2);
+    labelTotal = `$${total}`;
+    unitLabel = "$ per ticket";
+  }
+
+  const question = (template==="items") ?
+    `${units} items cost $${total}. What is the unit rate?` :
+    (template==="miles") ? `A car travels ${total} miles in ${units} hours. What is the unit rate?` :
+    (template==="minutes") ? `A student reads ${total} pages in ${units} minutes. What is the unit rate?` :
+    `${units} tickets cost $${total}. What is the unit rate?`;
+
+  return {
+    skill:s,
+    title: question,
+    model:{type:"tape", units, total, labelTotal},
+    steps:[
+      {
+        prompt:`Step 1: Unit rate means “per 1”. What operation do we use? (divide/multiply)`,
+        quick:[
+          {label:"divide", fill:"divide", submit:true, style:"primary"},
+          {label:"multiply", fill:"multiply", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(input.includes("divide")) return ok(`✅ Yes — divide total by ${units} to get “per 1.”`);
+          if(input.includes("multiply")) return miss(`Unit rate is per 1. Multiplying makes it larger — try dividing.`);
+          return miss(`Type "divide" or "multiply".`);
+        }
+      },
+      {
+        prompt:`Step 2: What is the unit rate? (number only)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const ans = total/units;
+          if(nearlyEqual(n, ans, 0.03)) return ok(`✅ Nice! Unit rate ≈ ${ans.toFixed(2)} (${unitLabel}).`);
+          if(nearlyEqual(n, total, 0.01)) return miss(`That’s the total. Divide by ${units}.`);
+          return miss(`Try: ${total} ÷ ${units}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* RP2: Proportions *************/
+function genRP2_Proportion(s,k){
+  // Build proportion a/b = x/d with clean integer solution
+  let a = randInt(2, k.biggerNums?12:9);
+  let b = randInt(2, k.biggerNums?12:10);
+  let scale = randInt(2, k.biggerNums?8:6);
+  if(k.allowNeg && Math.random()<0.25) { a = maybeNeg(a); } // occasionally negative ratio (stretch)
+
+  const d = b*scale;
+  const x = a*scale;
+
+  const story = randChoice([
+    `A recipe uses ${a} cups of flour for ${b} cups of water. How many cups of flour for ${d} cups of water?`,
+    `A map shows ${a} inches for ${b} miles. How many inches for ${d} miles?`,
+    `A machine makes ${a} parts in ${b} minutes. How many parts in ${d} minutes?`
+  ]);
+
+  const wantCross = (Math.random()<0.5);
+
+  return {
+    skill:s,
+    title: story,
+    model:{type:"none"},
+    steps:[
+      {
+        prompt:`Step 1: Set up a proportion. Should it look like a/b = x/d or a/b = d/x? (type "x/d" or "d/x")`,
+        quick:[
+          {label:"x/d", fill:"x/d", submit:true, style:"primary"},
+          {label:"d/x", fill:"d/x", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(input.includes("x/d")) return ok(`✅ Yes — keep the matching units in the same position.`);
+          if(input.includes("d/x")) return miss(`That flips the unknown. Keep the units aligned: a/b = x/d.`);
+          return miss(`Type "x/d" or "d/x".`);
+        }
+      },
+      {
+        prompt:`Step 2: Use cross multiplication. What equation do you get? (type like "b·x = a·d")`,
+        quick:[
+          {label:"b·x = a·d", fill:"b·x = a·d", submit:true, style:"primary"},
+          {label:"a·x = b·d", fill:"a·x = b·d", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          const t = normalizeEq(input);
+          if(t.includes("bx=a*d") || t.includes("b*x=a*d") || t.includes("b*x=a*d")) return ok(`✅ Good — now solve for x.`);
+          if(t.includes("ax=b*d") || t.includes("a*x=b*d")) return miss(`Careful — cross multiply across the equals sign: b·x = a·d.`);
+          return miss(`Try: b·x = a·d.`);
+        }
+      },
+      {
+        prompt:`Step 3: Solve for x. What is x? (number)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(n===x) return ok(`✅ Correct! x = ${x}.`);
+          if(n===d) return miss(`That’s the “other” number. You’re solving for x (the unknown).`);
+          if(n===a) return miss(`That’s the original a. You need the scaled value.`);
+          return miss(`Compute x = (a·d)/b = (${a}·${d})/${b}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* RP3: Percent Change *************/
+function genRP3_Percent(s,k){
+  const increase = Math.random()<0.5;
+  const pct = randChoice(k.allowDec ? [5,10,12,15,20,25,30,35] : [10,15,20,25,30]);
+  const origBase = randInt(k.biggerNums?20:10, k.biggerNums?120:80);
+  const original = k.allowDec ? maybeDecimal(origBase) : origBase;
+
+  const change = original*(pct/100);
+  const newVal = increase ? (original+change) : (original-change);
+
+  const context = randChoice([
+    {what:"price", unit:"$", label:(v)=>`$${v.toFixed(2)}`},
+    {what:"score", unit:"points", label:(v)=>`${v.toFixed(1)} points`},
+    {what:"length", unit:"cm", label:(v)=>`${v.toFixed(1)} cm`}
+  ]);
+
+  const title = (context.what==="price")
+    ? `A jacket costs ${context.label(original)}. It is ${increase?"increased":"decreased"} by ${pct}%. What is the new price?`
+    : `A value of ${context.label(original)} is ${increase?"increased":"decreased"} by ${pct}%. What is the new value?`;
+
+  return {
+    skill:s,
+    title,
+    model:{type:"none"},
+    steps:[
+      {
+        prompt:`Step 1: Convert ${pct}% to a decimal. (example: 20% → 0.20)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const dec = pct/100;
+          if(nearlyEqual(n, dec, 0.001)) return ok(`✅ Yes — ${pct}% = ${dec.toFixed(2)}.`);
+          if(nearlyEqual(n, pct, 0.001)) return miss(`That’s the percent number. Divide by 100 to get the decimal.`);
+          return miss(`Try: ${pct} ÷ 100.`);
+        }
+      },
+      {
+        prompt:`Step 2: Find the change amount: (decimal) × (original). What is the change amount?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, change, 0.05)) return ok(`✅ Good — change ≈ ${change.toFixed(2)}.`);
+          return miss(`Multiply ${ (pct/100).toFixed(2) } × ${original.toFixed(2)}.`);
+        }
+      },
+      {
+        prompt:`Step 3: ${increase?"Increase":"Decrease"} means ${increase?"add":"subtract"} the change. What is the new value?`,
+        quick:[
+          {label: increase ? "add" : "subtract", fill: increase ? "add" : "subtract", submit:false, style:"primary"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+          {label:"🎲 New", action:"NEW", style:"clay"},
+        ],
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, newVal, 0.05)) return ok(`✅ Correct! New value ≈ ${newVal.toFixed(2)}.`);
+          if(nearlyEqual(n, change, 0.05)) return miss(`That’s just the change amount. Now ${increase?"add":"subtract"} it from the original.`);
+          return miss(`Try: ${original.toFixed(2)} ${increase?"+":"-"} ${change.toFixed(2)}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* NS1: Add/Sub Integers *************/
+function genNS1_AddSubIntegers(s,k){
+  let a = randInt(1, k.biggerNums?20:12);
+  let b = randInt(1, k.biggerNums?20:12);
+  a = maybeNeg(a);
+  b = maybeNeg(b);
+
+  const sum = a+b;
+  return {
+    skill:s,
+    title:`Compute: ${a} + (${b})`,
+    model:{type:"numberLine", a, b, target: sum},
+    steps:[
+      {
+        prompt:`Step 1: Are the signs the same or different?`,
+        quick:[
+          {label:"same", fill:"same", submit:true, style:"primary"},
+          {label:"different", fill:"different", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          const same = (a>=0 && b>=0) || (a<0 && b<0);
+          if(input.includes("same") && same) return ok(`✅ Same signs → add and keep the sign.`);
+          if(input.includes("different") && !same) return ok(`✅ Different signs → subtract distances; keep sign of larger absolute value.`);
+          return miss(`Look at ${a} and ${b}. Same or different signs?`);
+        }
+      },
+      {
+        prompt:`Step 2: What is the result? (number)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(n===sum) return ok(`✅ Correct: ${sum}.`);
+          if(n===Math.abs(a)+Math.abs(b)) return miss(`You added absolute values but missed the sign rule.`);
+          return miss(`Try: use the number line (start at ${a}, move ${b}).`);
+        }
+      }
+    ]
+  };
+}
+
+/************* NS2: Multiply/Divide Rational Numbers *************/
+function genNS2_MultDivRationals(s,k){
+  const op = randChoice(["×","÷"]);
+  let a,b,ans,prompt,model;
+
+  if(k.allowFrac && Math.random()<0.55){
+    // fraction mode
+    const f1 = maybeFraction();
+    const f2 = maybeFraction();
+    const s1 = (k.allowNeg && Math.random()<0.35) ? -1 : 1;
+    const s2 = (k.allowNeg && Math.random()<0.35) ? -1 : 1;
+    a = {num:s1*f1.num, den:f1.den};
+    b = {num:s2*f2.num, den:f2.den};
+
+    const aval = a.num/a.den;
+    const bval = b.num/b.den;
+
+    if(op==="×"){
+      ans = aval*bval;
+      prompt = `Compute: (${a.num}/${a.den}) × (${b.num}/${b.den})`;
+    } else {
+      ans = aval / bval;
+      prompt = `Compute: (${a.num}/${a.den}) ÷ (${b.num}/${b.den})`;
+    }
+    model = {type:"signRules"};
+  } else {
+    // integer / decimal mode
+    let A = maybeDecimal(randInt(2, k.biggerNums?15:10));
+    let B = maybeDecimal(randInt(2, k.biggerNums?12:9));
+    A = (k.allowNeg && Math.random()<0.45) ? -A : A;
+    B = (k.allowNeg && Math.random()<0.45) ? -B : B;
+    if(op==="×"){
+      ans = A*B;
+      prompt = `Compute: ${A} × ${B}`;
+    } else {
+      ans = A/B;
+      prompt = `Compute: ${A} ÷ ${B}`;
+    }
+    model = {type:"signRules"};
+  }
+
+  const signNegative = (ans<0);
+
+  return {
+    skill:s,
+    title: prompt,
+    model,
+    steps:[
+      {
+        prompt:`Step 1: Will the answer be positive or negative?`,
+        quick:[
+          {label:"positive", fill:"positive", submit:true, style:"primary"},
+          {label:"negative", fill:"negative", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(input.includes("negative") && signNegative) return ok(`✅ Different signs → negative.`);
+          if(input.includes("positive") && !signNegative) return ok(`✅ Same signs → positive.`);
+          if(input.includes("positive") && signNegative) return miss(`Check signs: different signs → negative.`);
+          if(input.includes("negative") && !signNegative) return miss(`Check signs: same signs → positive.`);
+          return miss(`Type "positive" or "negative".`);
+        }
+      },
+      {
+        prompt:`Step 2: What is the value? (decimal or fraction)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, ans, 0.03)) return ok(`✅ Correct (approx): ${ans.toFixed(2)}.`);
+          if(nearlyEqual(Math.abs(n), Math.abs(ans), 0.03) && (n!==ans)) return miss(`Magnitude looks right — now fix the sign.`);
+          return miss(`Compute the magnitude, then apply the sign rule.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* NS3: Real-world Rational Problems *************/
+function genNS3_WordRational(s,k){
+  const template = randChoice(["temp","money","elevation"]);
+  let a = randInt(1, k.biggerNums?20:12);
+  let b = randInt(1, k.biggerNums?20:12);
+  if(k.allowNeg) a = maybeNeg(a);
+  if(k.allowNeg) b = maybeNeg(b);
+
+  let title, op, ans;
+  if(template==="temp"){
+    title = `The temperature is ${a}°C and then changes by ${b}°C. What is the new temperature?`;
+    op = "add";
+    ans = a+b;
+  } else if(template==="money"){
+    title = `You have $${a}. Then you spend/earn $${Math.abs(b)} (use sign: earn=+, spend=-). If the change is ${b}, what is the new amount?`;
+    op = "add";
+    ans = a+b;
+  } else {
+    title = `An elevator is at ${a} meters. It moves ${b} meters. What is the new position?`;
+    op = "add";
+    ans = a+b;
+  }
+
+  return {
+    skill:s,
+    title,
+    model:{type:"numberLine", a, b, target: ans},
+    steps:[
+      {
+        prompt:`Step 1: Do we add or subtract to apply a change?`,
+        quick:[
+          {label:"add", fill:"add", submit:true, style:"primary"},
+          {label:"subtract", fill:"subtract", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(input.includes("add")) return ok(`✅ Yes — we add the change (including negatives).`);
+          if(input.includes("subtract")) return miss(`A change of -5 is already subtraction, so we add the change value.`);
+          return miss(`Type "add" or "subtract".`);
+        }
+      },
+      {
+        prompt:`Step 2: What is the new value?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(n===ans) return ok(`✅ Correct: ${ans}.`);
+          return miss(`Try: ${a} + (${b}).`);
+        }
+      }
+    ]
+  };
+}
+
+/************* EE1: Simplify Expressions *************/
+function genEE1_Simplify(s,k){
+  // Build expression: ax + b + cx + d OR a(x+b)+cx+d (distributive at L3+)
+  const useDist = (k.allowDec || k.moreNeg) && Math.random()<0.55;
+
+  let a = randInt(2, k.biggerNums?9:7);
+  let b = randInt(1, k.biggerNums?12:9);
+  let c = randInt(1, k.biggerNums?8:6);
+  let d = randInt(0, k.biggerNums?12:9);
+
+  if(k.allowNeg){
+    if(Math.random()<0.4) b = maybeNeg(b);
+    if(Math.random()<0.4) d = maybeNeg(d);
+    if(Math.random()<0.35) c = maybeNeg(c);
+  }
+
+  // optional decimals at L3+
+  if(k.allowDec && Math.random()<0.35){
+    a = maybeDecimal(a);
+    c = maybeDecimal(Math.abs(c));
+    if(Math.random()<0.3) c = -c;
+  }
+
+  let title, coefX, constT;
+
+  if(useDist){
+    // a(x + b) + c x + d
+    title = `${a}(x ${b>=0?"+":"-"} ${Math.abs(b)}) ${c>=0?"+":"-"} ${Math.abs(c)}x ${d>=0?"+":"-"} ${Math.abs(d)}`;
+    coefX = a + c;
+    constT = a*b + d;
+  } else {
+    // ax + b + cx + d
+    title = `${a}x ${b>=0?"+":"-"} ${Math.abs(b)} ${c>=0?"+":"-"} ${Math.abs(c)}x ${d>=0?"+":"-"} ${Math.abs(d)}`;
+    coefX = a + c;
+    constT = b + d;
+  }
+
+  return {
+    skill:s,
+    title:`Simplify: ${title}`,
+    model:{type:"none"},
+    steps:[
+      {
+        prompt:`Step 1: Do we need to distribute first? (yes/no)`,
+        quick:[
+          {label:"yes", fill:"yes", submit:true, style:"primary"},
+          {label:"no", fill:"no", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(useDist && input.includes("yes")) return ok(`✅ Yes — distribute ${a} to the terms inside parentheses.`);
+          if(!useDist && input.includes("no")) return ok(`✅ Right — no parentheses, so we can combine like terms.`);
+          if(useDist && input.includes("no")) return miss(`There are parentheses. Distribute first.`);
+          if(!useDist && input.includes("yes")) return miss(`No parentheses here — you can combine like terms directly.`);
+          return miss(`Type "yes" or "no".`);
+        }
+      },
+      {
+        prompt:`Step 2: What is the coefficient of x after simplifying?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, coefX, 0.001)) return ok(`✅ Yes — coefficient of x is ${coefX}.`);
+          // misconception: forgot to combine c
+          if(nearlyEqual(n, a, 0.001) && useDist) return miss(`You distributed, but don’t forget the extra ${c}x term.`);
+          return miss(`Combine x-terms: (${a}x) and (${c}x).`);
+        }
+      },
+      {
+        prompt:`Step 3: What is the constant term after simplifying?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, constT, 0.001)) return ok(`✅ Great — constant term is ${constT}.`);
+          if(useDist && nearlyEqual(n, b+d, 0.001)) return miss(`You didn’t multiply ${a}×${b} when distributing.`);
+          return miss(`Combine constants (and distribute if needed).`);
+        }
+      }
+    ]
+  };
+}
+
+/************* EE2: One-step Equations *************/
+function genEE2_OneStep(s,k){
+  const type = randChoice(["add","sub","mul","div"]);
+  let x = randInt(2, k.biggerNums?20:12);
+  if(k.allowNeg && Math.random()<0.25) x = -x;
+
+  let a = randInt(2, k.biggerNums?12:9);
+  if(k.allowDec && Math.random()<0.35) a = maybeDecimal(a);
+  if(k.allowNeg && Math.random()<0.15) a = -a;
+
+  let title, inv, ans;
+
+  if(type==="add"){
+    const b = maybeNeg(randInt(1, k.biggerNums?15:10));
+    const c = x + b;
+    title = `Solve: x ${b>=0?"+":"-"} ${Math.abs(b)} = ${c}`;
+    inv = (b>=0) ? "subtract" : "add";
+    ans = x;
+    return {
+      skill:s,
+      title,
+      model:{type:"balance", leftLabel:`x ${b>=0?"+":"-"} ${Math.abs(b)}`, rightLabel:`${c}`},
+      steps:[
+        {
+          prompt:`Step 1: What inverse removes the ${b>=0?"+":"-"}${Math.abs(b)}?`,
+          quick:[
+            {label: inv, fill: inv, submit:true, style:"primary"},
+            {label: inv==="add" ? "subtract" : "add", fill: inv==="add"?"subtract":"add", submit:true, style:"clay"},
+            {label:"💡 Hint", action:"HINT", style:"gold"},
+          ],
+          validate:(input)=>{
+            if(input.includes(inv)) return ok(`✅ Yes — ${inv} ${Math.abs(b)} on both sides.`);
+            return miss(`Inverse check: to undo ${b>=0?"+":"-"}${Math.abs(b)}, you ${inv}.`);
+          }
+        },
+        {
+          prompt:`Step 2: What is x?`,
+          validate:(input)=>{
+            const n = toNumber(input);
+            if(nearlyEqual(n, ans, 0.001)) return ok(`✅ Correct: x = ${ans}.`);
+            return miss(`Do the inverse to isolate x.`);
+          }
+        }
+      ]
+    };
+  }
+
+  if(type==="sub"){
+    const b = maybeNeg(randInt(1, k.biggerNums?15:10));
+    // x - b = c
+    const c = x - b;
+    title = `Solve: x ${b>=0?"-":"+"} ${Math.abs(b)} = ${c}`;
+    inv = (b>=0) ? "add" : "subtract";
+    ans = x;
+    return {
+      skill:s,
+      title,
+      model:{type:"balance", leftLabel:`x ${b>=0?"-":"+"} ${Math.abs(b)}`, rightLabel:`${c}`},
+      steps:[
+        {
+          prompt:`Step 1: What inverse removes the ${b>=0?"-":"+"}${Math.abs(b)}?`,
+          quick:[
+            {label: inv, fill: inv, submit:true, style:"primary"},
+            {label: inv==="add" ? "subtract" : "add", fill: inv==="add"?"subtract":"add", submit:true, style:"clay"},
+            {label:"💡 Hint", action:"HINT", style:"gold"},
+          ],
+          validate:(input)=>{
+            if(input.includes(inv)) return ok(`✅ Yes — ${inv} ${Math.abs(b)} on both sides.`);
+            return miss(`Inverse check: to undo ${b>=0?"-":"+"}${Math.abs(b)}, you ${inv}.`);
+          }
+        },
+        {
+          prompt:`Step 2: What is x?`,
+          validate:(input)=>{
+            const n = toNumber(input);
+            if(nearlyEqual(n, ans, 0.001)) return ok(`✅ Correct: x = ${ans}.`);
+            return miss(`Use the inverse operation to isolate x.`);
+          }
+        }
+      ]
+    };
+  }
+
+  if(type==="mul"){
+    // ax = c
+    const c = a*x;
+    title = `Solve: ${a}x = ${c}`;
+    inv = "divide";
+    ans = x;
+    return {
+      skill:s,
+      title,
+      model:{type:"balance", leftLabel:`${a}x`, rightLabel:`${c}`},
+      steps:[
+        {
+          prompt:`Step 1: What inverse undoes “× ${a}”?`,
+          quick:[
+            {label:"divide", fill:"divide", submit:true, style:"primary"},
+            {label:"multiply", fill:"multiply", submit:true, style:"clay"},
+            {label:"💡 Hint", action:"HINT", style:"gold"},
+          ],
+          validate:(input)=>{
+            if(input.includes("divide")) return ok(`✅ Yes — divide both sides by ${a}.`);
+            if(input.includes("multiply")) return miss(`Multiplying would move x farther away. Divide to undo ×${a}.`);
+            return miss(`Type "divide".`);
+          }
+        },
+        {
+          prompt:`Step 2: What is x?`,
+          validate:(input)=>{
+            const n = toNumber(input);
+            if(nearlyEqual(n, ans, 0.02)) return ok(`✅ Correct: x = ${ans}.`);
+            if(nearlyEqual(n, c, 0.02)) return miss(`That’s the right side. Divide it by ${a}.`);
+            return miss(`Compute ${c} ÷ ${a}.`);
+          }
+        }
+      ]
+    };
+  }
+
+  // div: x / a = c
+  const c = x;
+  title = `Solve: x ÷ ${a} = ${c}`;
+  inv = "multiply";
+  ans = x*a;
+
+  return {
+    skill:s,
+    title,
+    model:{type:"balance", leftLabel:`x ÷ ${a}`, rightLabel:`${c}`},
+    steps:[
+      {
+        prompt:`Step 1: What inverse undoes “÷ ${a}”?`,
+        quick:[
+          {label:"multiply", fill:"multiply", submit:true, style:"primary"},
+          {label:"divide", fill:"divide", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(input.includes("multiply")) return ok(`✅ Yes — multiply both sides by ${a}.`);
+          if(input.includes("divide")) return miss(`Dividing again won’t undo the division. Multiply to undo ÷${a}.`);
+          return miss(`Type "multiply".`);
+        }
+      },
+      {
+        prompt:`Step 2: What is x?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, ans, 0.02)) return ok(`✅ Correct: x = ${ans}.`);
+          return miss(`Multiply ${c} × ${a}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* EE3: Two-step Equations *************/
+function genEE3_TwoStep(s,k){
+  let a = randInt(2, k.biggerNums?10:7);
+  let b = randInt(1, k.biggerNums?18:12);
+  let x = randInt(2, k.biggerNums?12:9);
+
+  if(k.allowNeg && Math.random()<0.25) x = -x;
+  if(k.allowNeg && Math.random()<0.25) b = -b;
+  if(k.allowNeg && (k.moreNeg || Math.random()<0.15)) a = (Math.random()<0.2 ? -a : a);
+
+  if(k.allowDec && Math.random()<0.25){
+    a = maybeDecimal(Math.abs(a));
+    if(k.allowNeg && Math.random()<0.15) a = -a;
+  }
+
+  const c = a*x + b;
+  const rightAfter = c - b;
+
+  return {
+    skill:s,
+    title:`Solve: ${a}x ${b>=0?"+":"-"} ${Math.abs(b)} = ${c}`,
+    model:{type:"balance", leftLabel:`${a}x ${b>=0?"+":"-"} ${Math.abs(b)}`, rightLabel:`${c}`},
+    steps:[
+      {
+        prompt:`Step 1: Do we undo the constant or the coefficient first?`,
+        quick:[
+          {label:"constant", fill:"constant", submit:true, style:"primary"},
+          {label:"coefficient", fill:"coefficient", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(input.includes("constant")) return ok(`✅ Yes — undo the constant first.`);
+          if(input.includes("coefficient")) return miss(`Not yet. Dividing now won’t remove the constant.`);
+          return miss(`Type "constant" or "coefficient".`);
+        }
+      },
+      {
+        prompt:`Step 2: What do you do to both sides? (add/subtract)`,
+        quick:[
+          {label: b>=0 ? "subtract" : "add", fill: b>=0 ? "subtract" : "add", submit:true, style:"primary"},
+          {label: b>=0 ? "add" : "subtract", fill: b>=0 ? "add" : "subtract", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          const want = (b>=0) ? "subtract" : "add";
+          if(input.includes(want)) return ok(`✅ Good — that removes the constant.`);
+          return miss(`Inverse check: to undo ${b>=0?"+":"-"}${Math.abs(b)}, you ${want}.`);
+        }
+      },
+      {
+        prompt:`Step 3: After that, what is the new equation? (like "3x = 18")`,
+        validate:(input)=>{
+          const t = normalizeEq(input);
+          if(t.includes("x=") && t.includes(String(rightAfter))) return ok(`✅ Looks right — now divide by ${a}.`);
+          if(t.includes(`${a}x=${rightAfter}`)) return ok(`✅ Yes — ${a}x = ${rightAfter}.`);
+          return miss(`You want: ${a}x = ${rightAfter}.`);
+        }
+      },
+      {
+        prompt:`Step 4: What is x?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const ans = rightAfter/a;
+          if(nearlyEqual(n, ans, 0.03)) return ok(`✅ Correct: x = ${ans.toFixed(2)}.`);
+          if(nearlyEqual(n, rightAfter, 0.01)) return miss(`That’s before dividing by ${a}. Now divide.`);
+          return miss(`Compute ${rightAfter} ÷ ${a}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* EE4: Inequalities *************/
+function genEE4_Inequality(s,k){
+  // ax + b < c
+  let a = randInt(2, k.biggerNums?9:6);
+  let b = randInt(1, k.biggerNums?15:10);
+  let x = randInt(2, k.biggerNums?12:9);
+  if(k.allowNeg && Math.random()<0.25) x = -x;
+  if(k.allowNeg && Math.random()<0.35) b = -b;
+
+  // L4: negative coefficient to force flip sometimes
+  let forceFlip = (state.difficulty>=4 && Math.random()<0.60);
+  if(forceFlip) a = -a;
+
+  const c = a*x + b;
+  const symbol = randChoice(["<", ">", "≤", "≥"]);
+  const rightAfter = c - b;
+
+  return {
+    skill:s,
+    title:`Solve: ${a}x ${b>=0?"+":"-"} ${Math.abs(b)} ${symbol} ${c}`,
+    model:{type:"balance", leftLabel:`${a}x ${b>=0?"+":"-"} ${Math.abs(b)}`, rightLabel:`${c}`},
+    steps:[
+      {
+        prompt:`Step 1: Undo the constant first. Should we add or subtract ${Math.abs(b)}?`,
+        quick:[
+          {label: b>=0 ? "subtract" : "add", fill: b>=0 ? "subtract" : "add", submit:true, style:"primary"},
+          {label: b>=0 ? "add" : "subtract", fill: b>=0 ? "add" : "subtract", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          const want = (b>=0) ? "subtract" : "add";
+          if(input.includes(want)) return ok(`✅ Good — constant removed.`);
+          return miss(`Inverse check: to undo ${b>=0?"+":"-"}${Math.abs(b)}, you ${want}.`);
+        }
+      },
+      {
+        prompt:`Step 2: When we divide by ${a}, will the inequality sign flip? (yes/no)`,
+        quick:[
+          {label:"yes", fill:"yes", submit:true, style:"primary"},
+          {label:"no", fill:"no", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          const flip = (a<0);
+          if(flip && input.includes("yes")) return ok(`✅ Yes — dividing by a negative flips the sign.`);
+          if(!flip && input.includes("no")) return ok(`✅ Correct — dividing by a positive does NOT flip the sign.`);
+          if(flip && input.includes("no")) return miss(`Because ${a} is negative, the sign flips.`);
+          if(!flip && input.includes("yes")) return miss(`Because ${a} is positive, the sign stays the same.`);
+          return miss(`Type "yes" or "no".`);
+        }
+      },
+      {
+        prompt:`Step 3: Solve for x (number).`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const ans = rightAfter/a;
+          if(nearlyEqual(n, ans, 0.03)) return ok(`✅ Great — x = ${ans.toFixed(2)} (with the correct inequality sign).`);
+          return miss(`Compute (${c} - (${b})) ÷ ${a} = ${rightAfter} ÷ ${a}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* EE5: Word problems with equations *************/
+function genEE5_WordEq(s,k){
+  const scenario = randChoice(["tickets","taxi","membership"]);
+  let x = randInt(3, k.biggerNums?12:10);
+  if(k.allowNeg && Math.random()<0.10) x = -x; // rarely negative, mostly keep real-world positive
+  let fee = randInt(3, k.biggerNums?15:10);
+  let rate = randInt(2, k.biggerNums?9:7);
+  if(k.allowDec && Math.random()<0.35) rate = maybeDecimal(rate);
+
+  const total = fee + rate*x;
+
+  let title, equation, promptEq;
+  if(scenario==="tickets"){
+    title = `A field trip has a $${fee} fee plus $${rate} per ticket. The total is $${total}. How many tickets?`;
+    equation = `${fee}+${rate}x=${total}`;
+    promptEq = `Step 2: Write the equation (like "${fee}+${rate}x=${total}")`;
+  } else if(scenario==="taxi"){
+    title = `A taxi charges $${fee} to start plus $${rate} per mile. The ride costs $${total}. How many miles?`;
+    equation = `${fee}+${rate}x=${total}`;
+    promptEq = `Step 2: Write the equation (like "${fee}+${rate}x=${total}")`;
+  } else {
+    title = `A gym charges $${fee} signup fee plus $${rate} per month. The total paid is $${total}. How many months?`;
+    equation = `${fee}+${rate}x=${total}`;
+    promptEq = `Step 2: Write the equation (like "${fee}+${rate}x=${total}")`;
+  }
+
+  return {
+    skill:s,
+    title,
+    model:{type:"balance", leftLabel:`${rate}x + ${fee}`, rightLabel:`${total}`},
+    steps:[
+      {
+        prompt:`Step 1: What does x represent? (type "tickets", "miles", or "months")`,
+        quick:[
+          {label: scenario==="tickets"?"tickets":(scenario==="taxi"?"miles":"months"), fill: scenario==="tickets"?"tickets":(scenario==="taxi"?"miles":"months"), submit:true, style:"primary"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+          {label:"🎲 New", action:"NEW", style:"clay"},
+        ],
+        validate:(input)=>{
+          const want = scenario==="tickets"?"tickets":(scenario==="taxi"?"miles":"months");
+          if(input.includes(want)) return ok(`✅ Yes — x is the number of ${want}.`);
+          return miss(`x should represent the unknown quantity in the story.`);
+        }
+      },
+      {
+        prompt: promptEq,
+        validate:(input)=>{
+          const t = normalizeEq(input);
+          const want = normalizeEq(equation);
+          if(t.includes(want)) return ok(`✅ Nice equation. Now solve it.`);
+          // allow equivalent with x term first
+          if(t.includes(`${rate}x+${fee}=${total}`) || t.includes(`${fee}+${rate}x=${total}`)) return ok(`✅ That works. Now solve.`);
+          return miss(`Try: ${fee} + ${rate}x = ${total}.`);
+        }
+      },
+      {
+        prompt:`Step 3: Solve for x. What is x?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const ans = (total-fee)/rate;
+          if(nearlyEqual(n, ans, 0.03)) return ok(`✅ Correct — x = ${ans.toFixed(2)}.`);
+          if(nearlyEqual(n, total-fee, 0.03)) return miss(`That’s after subtracting the fee. Now divide by ${rate}.`);
+          return miss(`Subtract ${fee} then divide by ${rate}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* G1: Area *************/
+function genG1_Area(s,k){
+  const shape = randChoice(["triangle","rectangle","parallelogram"]);
+  let b = randInt(4, k.biggerNums?18:12);
+  let h = randInt(3, k.biggerNums?16:10);
+  if(k.allowDec && Math.random()<0.25){ b = maybeDecimal(b); h = maybeDecimal(h); }
+
+  let title, ans, formula;
+  if(shape==="triangle"){
+    ans = 0.5*b*h;
+    formula = "A = 1/2bh";
+    title = `Find the area of a triangle with base ${b} and height ${h}.`;
+    return {
+      skill:s,
+      title,
+      model:{type:"triangleDrag", base: b, height: h},
+      steps:[
+        {
+          prompt:`Step 1: What formula?`,
+          quick:[
+            {label:"1/2bh", fill:"1/2bh", submit:true, style:"primary"},
+            {label:"bh", fill:"bh", submit:true, style:"clay"},
+            {label:"💡 Hint", action:"HINT", style:"gold"},
+          ],
+          validate:(input)=>{
+            if(input.includes("1/2") || input.includes("0.5")) return ok(`✅ Yes — triangle area is half of bh.`);
+            if(input.trim()==="bh") return miss(`That’s rectangle area. Triangle is half of that.`);
+            return miss(`Triangle: A = ½bh.`);
+          }
+        },
+        {
+          prompt:`Step 2: What is the area?`,
+          validate:(input)=>{
+            const n = toNumber(input);
+            if(nearlyEqual(n, ans, 0.05)) return ok(`✅ Correct: A ≈ ${ans.toFixed(2)} square units.`);
+            if(nearlyEqual(n, b*h, 0.05)) return miss(`That’s bh. Triangle is half: divide by 2.`);
+            return miss(`Compute 0.5 × ${b} × ${h}.`);
+          }
+        }
+      ]
+    };
+  }
+
+  if(shape==="rectangle"){
+    ans = b*h;
+    title = `Find the area of a rectangle with length ${b} and width ${h}.`;
+    return {
+      skill:s,
+      title,
+      model:{type:"none"},
+      steps:[
+        {
+          prompt:`Step 1: What operation finds rectangle area?`,
+          quick:[
+            {label:"multiply", fill:"multiply", submit:true, style:"primary"},
+            {label:"add", fill:"add", submit:true, style:"clay"},
+            {label:"💡 Hint", action:"HINT", style:"gold"},
+          ],
+          validate:(input)=>{
+            if(input.includes("multiply")) return ok(`✅ Yes — area = length × width.`);
+            return miss(`Area uses multiplication for rectangles.`);
+          }
+        },
+        {
+          prompt:`Step 2: What is the area?`,
+          validate:(input)=>{
+            const n = toNumber(input);
+            if(nearlyEqual(n, ans, 0.05)) return ok(`✅ Correct: A ≈ ${ans.toFixed(2)} square units.`);
+            return miss(`Compute ${b} × ${h}.`);
+          }
+        }
+      ]
+    };
+  }
+
+  // parallelogram: A = b*h
+  ans = b*h;
+  title = `Find the area of a parallelogram with base ${b} and height ${h}.`;
+  return {
+    skill:s,
+    title,
+    model:{type:"none"},
+    steps:[
+      {
+        prompt:`Step 1: Parallelogram area uses base × height. True or false?`,
+        quick:[
+          {label:"true", fill:"true", submit:true, style:"primary"},
+          {label:"false", fill:"false", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          if(input.includes("true")) return ok(`✅ True — A = b × h.`);
+          if(input.includes("false")) return miss(`It is true: A = base × height.`);
+          return miss(`Type "true" or "false".`);
+        }
+      },
+      {
+        prompt:`Step 2: What is the area?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, ans, 0.05)) return ok(`✅ Correct: A ≈ ${ans.toFixed(2)} square units.`);
+          return miss(`Compute ${b} × ${h}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* G2: Circles *************/
+function genG2_Circle(s,k){
+  const mode = randChoice(["A","C"]);
+  let r = randInt(2, k.biggerNums?14:10);
+  if(k.allowDec && Math.random()<0.30) r = maybeDecimal(r);
+  const piApprox = randChoice([3.14, 3.1416]);
+  const area = piApprox*r*r;
+  const circ = 2*piApprox*r;
+
+  const title = mode==="A"
+    ? `Find the area of a circle with radius r = ${r}. Use π ≈ ${piApprox}. (Round to nearest tenth)`
+    : `Find the circumference of a circle with radius r = ${r}. Use π ≈ ${piApprox}. (Round to nearest tenth)`;
+
+  return {
+    skill:s,
+    title,
+    model:{type:"circle", r, piApprox, mode},
+    steps:[
+      {
+        prompt:`Step 1: Choose the formula. Type "A=πr^2" or "C=2πr"`,
+        quick:[
+          {label: mode==="A"?"A=πr^2":"C=2πr", fill: mode==="A"?"A=πr^2":"C=2πr", submit:true, style:"primary"},
+          {label: mode==="A"?"C=2πr":"A=πr^2", fill: mode==="A"?"C=2πr":"A=πr^2", submit:true, style:"clay"},
+          {label:"💡 Hint", action:"HINT", style:"gold"},
+        ],
+        validate:(input)=>{
+          const t = normalizeEq(input);
+          if(mode==="A" && (t.includes("a=πr^2") || t.includes("a=pir^2") || t.includes("a=3.14r^2"))) return ok(`✅ Good — area uses πr².`);
+          if(mode==="C" && (t.includes("c=2πr") || t.includes("c=2pir") || t.includes("c=2*3.14*r"))) return ok(`✅ Good — circumference uses 2πr.`);
+          return miss(`Pick ${mode==="A"?"A=πr^2":"C=2πr"}.`);
+        }
+      },
+      {
+        prompt:`Step 2: Compute and round to the nearest tenth. What is the value?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const ans = mode==="A" ? area : circ;
+          const rounded = Math.round(ans*10)/10;
+          if(nearlyEqual(n, rounded, 0.05)) return ok(`✅ Correct: ≈ ${rounded}.`);
+          if(nearlyEqual(n, ans, 0.05)) return miss(`You’re super close — the problem asks to round to the nearest tenth.`);
+          return miss(`Compute using π ≈ ${piApprox}. Then round to the nearest tenth.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* G3: Volume *************/
+function genG3_Volume(s,k){
+  let l = randInt(2, k.biggerNums?16:10);
+  let w = randInt(2, k.biggerNums?14:9);
+  let h = randInt(2, k.biggerNums?16:10);
+  if(k.allowDec && Math.random()<0.25){ l = maybeDecimal(l); w = maybeDecimal(w); h = maybeDecimal(h); }
+
+  const baseA = l*w;
+  const vol = baseA*h;
+
+  return {
+    skill:s,
+    title:`Find the volume of a rectangular prism with l=${l}, w=${w}, h=${h}.`,
+    model:{type:"prism", l, w, h},
+    steps:[
+      {
+        prompt:`Step 1: Volume = (area of base) × height. What is the base area?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, baseA, 0.05)) return ok(`✅ Yes — base area ≈ ${baseA.toFixed(2)}.`);
+          return miss(`Compute base area: ${l} × ${w}.`);
+        }
+      },
+      {
+        prompt:`Step 2: Now multiply base area by height. What is the volume?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, vol, 0.08)) return ok(`✅ Correct — volume ≈ ${vol.toFixed(2)} cubic units.`);
+          if(nearlyEqual(n, baseA, 0.05)) return miss(`That’s just the base area. Now multiply by height ${h}.`);
+          return miss(`Compute ${baseA.toFixed(2)} × ${h}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* G4: Surface Area *************/
+function genG4_SurfaceArea(s,k){
+  let l = randInt(2, k.biggerNums?14:10);
+  let w = randInt(2, k.biggerNums?12:9);
+  let h = randInt(2, k.biggerNums?14:10);
+  if(k.allowDec && Math.random()<0.20){ l = maybeDecimal(l); w = maybeDecimal(w); h = maybeDecimal(h); }
+
+  const sa = 2*(l*w + l*h + w*h);
+
+  return {
+    skill:s,
+    title:`Find the surface area of a rectangular prism with l=${l}, w=${w}, h=${h}.`,
+    model:{type:"prism", l, w, h},
+    steps:[
+      {
+        prompt:`Step 1: Compute lw, lh, and wh. Which one is lw? (type the value)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const lw = l*w;
+          if(nearlyEqual(n, lw, 0.05)) return ok(`✅ Yes — lw ≈ ${lw.toFixed(2)}.`);
+          return miss(`lw means l×w = ${l}×${w}.`);
+        }
+      },
+      {
+        prompt:`Step 2: Surface area = 2(lw + lh + wh). What is the surface area?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, sa, 0.10)) return ok(`✅ Correct — SA ≈ ${sa.toFixed(2)} square units.`);
+          return miss(`Compute 2(lw+lh+wh).`);
+        }
+      }
+    ]
+  };
+}
+
+/************* SP1: Mean & MAD *************/
+function genSP1_MeanMAD(s,k){
+  const n = (state.difficulty<=2) ? 4 : (state.difficulty===3 ? 5 : 6);
+  const data = [];
+  for(let i=0;i<n;i++){
+    let v = randInt(2, k.biggerNums?15:10);
+    if(k.allowDec && Math.random()<0.35) v = maybeDecimal(v);
+    data.push(+v.toFixed(2));
+  }
+  const mean = data.reduce((a,b)=>a+b,0)/n;
+  const distances = data.map(x=>Math.abs(x-mean));
+  const mad = distances.reduce((a,b)=>a+b,0)/n;
+
+  return {
+    skill:s,
+    title:`Data set: ${data.join(", ")}. Find the mean and MAD (nearest tenth).`,
+    model:{type:"none"},
+    steps:[
+      {
+        prompt:`Step 1: What is the mean? (round to nearest tenth)`,
+        validate:(input)=>{
+          const n1 = toNumber(input);
+          const rounded = Math.round(mean*10)/10;
+          if(nearlyEqual(n1, rounded, 0.06)) return ok(`✅ Mean ≈ ${rounded}.`);
+          return miss(`Add the values, then divide by ${n}.`);
+        }
+      },
+      {
+        prompt:`Step 2: Find MAD: average of distances from the mean. What is MAD? (nearest tenth)`,
+        validate:(input)=>{
+          const n2 = toNumber(input);
+          const rounded = Math.round(mad*10)/10;
+          if(nearlyEqual(n2, rounded, 0.06)) return ok(`✅ MAD ≈ ${rounded}.`);
+          return miss(`Compute each |value − mean|, then average those distances.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* SP2: Probability *************/
+function genSP2_Probability(s,k){
+  const fav = randInt(2, k.biggerNums?12:8);
+  const other = randInt(1, k.biggerNums?10:7);
+  const total = fav+other;
+
+  const title = `A bag has ${fav} favorable outcomes and ${other} other outcomes. What is P(favorable)?`;
+  return {
+    skill:s,
+    title,
+    model:{type:"probBox", fav, other},
+    steps:[
+      {
+        prompt:`Step 1: Probability = favorable ÷ total. What is the total?`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(n===total) return ok(`✅ Total outcomes = ${total}.`);
+          return miss(`Add: ${fav} + ${other}.`);
+        }
+      },
+      {
+        prompt:`Step 2: What is P(favorable)? (fraction like 3/5 or decimal)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          const ans = fav/total;
+          const frac = parseFraction(input);
+          if(frac && frac.num===fav && frac.den===total) return ok(`✅ Correct: ${fav}/${total}.`);
+          if(frac && frac.num===total && frac.den===fav) return miss(`That’s flipped. Favorable goes on top.`);
+          if(nearlyEqual(n, ans, 0.02)) return ok(`✅ Correct (decimal): ≈ ${ans.toFixed(2)}.`);
+          return miss(`Use favorable/total = ${fav}/${total}.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* SP3: Compare Data Sets *************/
+function genSP3_CompareSets(s,k){
+  const len = (state.difficulty<=2)? 4 : 5;
+  const makeSet = ()=>{
+    const arr=[];
+    for(let i=0;i<len;i++){
+      let v = randInt(2, k.biggerNums?18:12);
+      if(k.allowDec && Math.random()<0.25) v = maybeDecimal(v);
+      arr.push(+v.toFixed(1));
+    }
+    return arr;
+  };
+  const A = makeSet();
+  const B = makeSet();
+  const meanA = A.reduce((a,b)=>a+b,0)/len;
+  const meanB = B.reduce((a,b)=>a+b,0)/len;
+  const rangeA = Math.max(...A)-Math.min(...A);
+  const rangeB = Math.max(...B)-Math.min(...B);
+
+  const moreVar = (rangeA>rangeB) ? "A" : (rangeB>rangeA ? "B" : "tie");
+
+  return {
+    skill:s,
+    title:`Compare data sets.\nSet A: ${A.join(", ")}\nSet B: ${B.join(", ")}\nWhich set has greater variability (spread)?`,
+    model:{type:"none"},
+    steps:[
+      {
+        prompt:`Step 1: Compute the range for Set A. (max - min)`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, rangeA, 0.1)) return ok(`✅ Range(A) ≈ ${rangeA.toFixed(1)}.`);
+          return miss(`Find max(A) - min(A).`);
+        }
+      },
+      {
+        prompt:`Step 2: Compute the range for Set B.`,
+        validate:(input)=>{
+          const n = toNumber(input);
+          if(nearlyEqual(n, rangeB, 0.1)) return ok(`✅ Range(B) ≈ ${rangeB.toFixed(1)}.`);
+          return miss(`Find max(B) - min(B).`);
+        }
+      },
+      {
+        prompt:`Step 3: Which has greater variability? Type "A", "B", or "tie".`,
+        quick:[
+          {label:"A", fill:"A", submit:true, style:"primary"},
+          {label:"B", fill:"B", submit:true, style:"clay"},
+          {label:"tie", fill:"tie", submit:true, style:"gold"},
+        ],
+        validate:(input)=>{
+          const t = input.trim().toLowerCase();
+          if(moreVar==="A" && t==="a") return ok(`✅ Yes — Set A has the bigger range.`);
+          if(moreVar==="B" && t==="b") return ok(`✅ Yes — Set B has the bigger range.`);
+          if(moreVar==="tie" && t.includes("tie")) return ok(`✅ Correct — the ranges are equal.`);
+          return miss(`Compare the ranges you found.`);
+        }
+      }
+    ]
+  };
+}
+
+/************* SP4: Sampling & Bias *************/
+function genSP4_SamplingBias(s,k){
+  const scenario = randChoice([
+    {
+      q:`A principal wants to know what ALL students think about the cafeteria food. Which is the best sample?`,
+      population:`all students in the school`,
+      best:`randomly select students from each grade`,
+      bias:`only surveying students who eat lunch in the cafeteria`
+    },
+    {
+      q:`A coach wants to know how ALL 7th graders feel about homework time. Best sample?`,
+      population:`all 7th grade students`,
+      best:`randomly select 7th graders from different classes`,
+      bias:`asking only your friends`
+    },
+    {
+      q:`A city wants to know how ALL residents feel about a new park. Best sample?`,
+      population:`all residents in the city`,
+      best:`randomly sample residents from different neighborhoods`,
+      bias:`only surveying people already at the park`
+    }
+  ]);
+
+  const methodChoices = [
+    scenario.best,
+    scenario.bias,
+    randChoice([
+      "ask only the loudest students",
+      "survey one class period only",
+      "post a poll and only count people who respond"
+    ])
+  ];
+
+  // shuffle methods
+  methodChoices.sort(()=>Math.random()-0.5);
+
+  return {
+    skill:s,
+    title: scenario.q,
+    model:{type:"none"},
+    steps:[
+      {
+        prompt:`Step 1: What is the population? (type a short phrase)`,
+        validate:(input)=>{
+          const t = input.toLowerCase();
+          if(t.includes("all") && (t.includes("student") || t.includes("resident") || t.includes("7th"))) return ok(`✅ Yes — population means the whole group we're trying to learn about.`);
+          // allow exact
+          if(t.includes(scenario.population.split(" ")[0])) return ok(`✅ Good — population is the full group.`);
+          return miss(`Population = the whole group the question is about (ALL students/residents/etc.).`);
+        }
+      },
+      {
+        prompt:`Step 2: Pick the best sampling method (type 1, 2, or 3):\n1) ${methodChoices[0]}\n2) ${methodChoices[1]}\n3) ${methodChoices[2]}`,
+        quick:[
+          {label:"1", fill:"1", submit:true, style:"primary"},
+          {label:"2", fill:"2", submit:true, style:"clay"},
+          {label:"3", fill:"3", submit:true, style:"gold"},
+        ],
+        validate:(input)=>{
+          const pick = input.trim();
+          const chosen = (pick==="1") ? methodChoices[0] : (pick==="2") ? methodChoices[1] : (pick==="3") ? methodChoices[2] : "";
+          if(!chosen) return miss(`Type 1, 2, or 3.`);
+          if(chosen===scenario.best) return ok(`✅ Yes — random sampling is most fair/representative.`);
+          if(chosen===scenario.bias) return miss(`That one is biased. It misses people outside that group.`);
+          return miss(`Look for random selection from the whole population.`);
+        }
+      },
+      {
+        prompt:`Step 3: Name one possible source of bias in a bad sample. (type a phrase)`,
+        validate:(input)=>{
+          const t = input.toLowerCase();
+          if(t.includes("friends") || t.includes("only") || t.includes("one class") || t.includes("park") || t.includes("cafeteria")) {
+            return ok(`✅ Yes — that’s a bias because it ignores parts of the population.`);
+          }
+          return miss(`Bias happens when you only ask one kind of person, or one place/time, so results aren’t representative.`);
+        }
+      }
+    ]
+  };
+}
+
+/***********************
+ * Study Guide
+ ***********************/
+function renderGuide(skill){
+  const g = skill.guide;
+  document.getElementById("standardTag").textContent = `${skill.code} ${skill.emoji}`;
+  const body = document.getElementById("guideBody");
+
+  body.innerHTML = `
+    <div class="guideCard">
+      <h3>${skill.emoji} ${skill.title}</h3>
+      <p>${escapeHTML(g.key)}</p>
+      <div class="tagRow">
+        <span class="tag sage">${skill.code}</span>
+        <span class="tag gold">Ohio Grade 7</span>
+        <span class="tag clay">No saving</span>
+      </div>
+    </div>
+
+    <div class="guideCard">
+      <h3>Steps</h3>
+      <ul>${g.steps.map(x=>`<li>${escapeHTML(x)}</li>`).join("")}</ul>
+    </div>
+
+    <div class="guideCard">
+      <h3>Common mistakes</h3>
+      <ul>${g.mistakes.map(x=>`<li>${escapeHTML(x)}</li>`).join("")}</ul>
+    </div>
+
+    <div class="guideCard">
+      <h3>Example</h3>
+      <p style="font-family:var(--mono)">${escapeHTML(g.example)}</p>
+    </div>
+  `;
+}
+
+/***********************
+ * Tutor flow
+ ***********************/
+function updateStatus(){
+  const d = DOMAINS.find(x=>x.id===state.domain);
+  const s = getSelectedSkill();
+  document.getElementById("statusLine").textContent =
+    `${d.emoji} ${d.name} • ${s.emoji} ${s.title} • ${s.code} • Level ${state.difficulty}${state.challenge ? " (Challenge)" : ""}`;
+}
+
+function newProblem(){
+  state.stepIndex = 0;
+  state.current = makeProblem();
+  updateStatus();
+  const s = state.current.skill;
+
+  addMsg("tutor",
+    `Problem (${s.code}):\n${state.current.title}\n\n${state.current.steps[0].prompt}`,
+    `Level ${state.difficulty}${state.challenge ? " • Challenge" : ""}`);
+
+  renderVisual(state.current);
+  renderGuide(s);
+
+  // Update quick buttons for current step
+  setQuickButtons(state.current.steps[state.stepIndex]);
+}
+
+function submitStep(){
+  if(!state.current) return;
+  const input = document.getElementById("studentInput");
+  const raw = input.value.trim();
+  if(!raw){
+    toast("Type a step", "Just your next step — not the whole solution.");
+    return;
+  }
+  input.value = "";
+  addMsg("user", raw);
+
+  const stepObj = state.current.steps[state.stepIndex];
+  const res = stepObj.validate(raw.toLowerCase());
+
+  if(res.ok){
+    addMsg("tutor", res.text, PRAISE[Math.floor(Math.random()*PRAISE.length)], "good");
+    state.stepIndex++;
+
+    if(state.stepIndex >= state.current.steps.length){
+      celebrate();
+      toast("Nice work 🎉", "New problem coming up…");
+      setTimeout(()=> newProblem(), 650);
+      return;
+    }
+
+    addMsg("tutor", state.current.steps[state.stepIndex].prompt, "One step at a time 🙂");
+    setQuickButtons(state.current.steps[state.stepIndex]);
+  } else {
+    addMsg("tutor", res.text, "Try again — no rush.", "try");
+    setQuickButtons(state.current.steps[state.stepIndex]);
+  }
+}
+
+function giveHint(){
+  if(!state.current) return;
+  const s = state.current.skill;
+  const hint = s.guide.key;
+  addMsg("tutor", `Hint: ${hint}`, "Use the Study Guide if you want 📘", "try");
+  toast("Hint", hint);
+}
+
+function showExample(){
+  const s = getSelectedSkill();
+  addMsg("tutor", `Example:\n${s.guide.example}`, `${s.code}`);
+  toast("Example", "Check the Study Guide for more.");
+}
+
+function levelUp(){
+  state.difficulty = Math.min(4, state.difficulty+1);
+  document.getElementById("difficultySelect").value = String(state.difficulty);
+  toast("Harder", `Now Level ${state.difficulty}.`);
+  newProblem();
+}
+function levelDown(){
+  state.difficulty = Math.max(1, state.difficulty-1);
+  document.getElementById("difficultySelect").value = String(state.difficulty);
+  toast("Easier", `Now Level ${state.difficulty}.`);
+  newProblem();
+}
+function toggleChallenge(){
+  state.challenge = !state.challenge;
+  const btn = document.getElementById("challengeBtn");
+  btn.textContent = `🔥 Challenge: ${state.challenge ? "On" : "Off"}`;
+  btn.className = `btn ${state.challenge ? "warn" : "ghost"}`;
+  toast("Challenge mode", state.challenge ? "Harder numbers + trickier setups." : "Back to normal.");
+  newProblem();
+}
+
+function readAloud(){
+  if(!state.current) return;
+  const text = `Problem. ${state.current.title}. ${state.current.steps[state.stepIndex]?.prompt || ""}`;
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 1.0;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+  toast("Read aloud", "Speaking the current prompt.");
+}
+
+/***********************
+ * Domain + skill wiring
+ ***********************/
+function setDomain(id){
+  state.domain = id;
+  syncChips();
+  fillSkills();
+  newChatSection();
+  newProblem();
+}
+
+function newChatSection(){
+  const chat = document.getElementById("chat");
+  chat.innerHTML = "";
+  tutorIntro();
+}
+
+document.getElementById("skillSelect").addEventListener("change", ()=>{
+  state.skill = document.getElementById("skillSelect").value;
+  toast("Skill selected", getSelectedSkill().title);
+  newProblem();
+});
+document.getElementById("difficultySelect").addEventListener("change", ()=>{
+  state.difficulty = Number(document.getElementById("difficultySelect").value);
+  toast("Difficulty", `Level ${state.difficulty}`);
+  newProblem();
+});
+
+// ✅ ENTER KEY SUBMITS (Issue #3 fix)
+document.getElementById("studentInput").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter"){
+    e.preventDefault();
+    submitStep();
+  }
+});
+
+/***********************
+ * Init
+ ***********************/
+function init(){
+  buildDomainChips();
+  fillSkills();
+  document.getElementById("difficultySelect").value = String(state.difficulty);
+  document.getElementById("challengeBtn").textContent = "🔥 Challenge: Off";
+  newChatSection();
+  updateStatus();
+  newProblem();
+}
+init();
+
+/***********************
+ * FINAL AI PROMPT (for future API use)
+ ***********************
+You are a friendly 7th grade Ohio math teacher.
+- Align practice to Ohio Grade 7 domains: 7.RP, 7.NS, 7.EE, 7.G, 7.SP.
+- Guide students one step at a time; do NOT allow step skipping.
+- Don’t give full solutions unless explicitly asked.
+- Detect misconceptions (sign errors, wrong inverse, flipped ratios, forgetting 1/2 for triangle area, probability fraction flipped, inequality flip mistakes).
+- Supportive language; normalize mistakes.
+- Students control difficulty and can use challenge mode.
+- No grading and no tracking; session is ephemeral.
+- Use visuals when helpful.
+***********************/
+</script>
+</body>
+</html>
